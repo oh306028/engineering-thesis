@@ -1,0 +1,132 @@
+############################
+#  ASP.NET Core / .NET
+############################
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+*.log
+*.tlog
+*.cache
+*.dbmdl
+*.bak
+*.backup
+*.tmp
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Publish output
+publish/
+out/
+dist/
+AppPackages/
+BundleArtifacts/
+project.lock.json
+project.fragment.lock.json
+
+# Visual Studio
+.vs/
+.vscode/
+.idea/
+*.userprefs
+
+# Rider
+.idea/
+*.sln.iml
+
+# Dotnet Tools
+.dotnet/
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+.nuget/
+# Ignore NuGet local cache
+~/.nuget/
+
+# Entity Framework
+migrations/
+
+# Azure
+*.PublishSettings
+appsettings.*.local.json
+appsettings.Local.json
+secrets.json
+*.pubxml
+*.publishproj
+
+# Local development certs
+*.pfx
+*.p12
+
+# Docker
+docker-compose.override.yml
+docker-compose.*.yml
+.docker/
+Dockerfile.*
+
+############################
+#  React + Vite Frontend
+############################
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.cache/
+.vite/
+vite.config.timestamp-*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+*.lcov
+
+# TypeScript
+*.tsbuildinfo
+
+############################
+#  General
+############################
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+
+############################
+#  Optional: local tools/config
+############################
+*.local.json
+*.development.json
+*.swp
+*.swo
+*.orig
