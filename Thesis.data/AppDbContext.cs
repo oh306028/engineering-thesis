@@ -74,6 +74,18 @@ namespace Thesis.data
 
             });
 
+            modelBuilder.Entity<Badge>(e =>
+            {
+                e.Property(p => p.Name).HasMaxLength(200);
+
+            });
+
+            modelBuilder.Entity<Achievement>(e =>
+            {
+                e.Property(p => p.Name).HasMaxLength(200);
+
+            });
+
             modelBuilder.Entity<StudentBadges>(e =>
             {
                 e.HasKey(p => new { p.StudentId, p.BadgeId });
@@ -128,6 +140,8 @@ namespace Thesis.data
                 .WithOne(p => p.Notification)
                 .OnDelete(DeleteBehavior.Cascade);
 
+                e.Ignore(p => p.TypeEnum);
+
             });
 
             modelBuilder.Entity<Subject>(e =>
@@ -136,6 +150,8 @@ namespace Thesis.data
                 .WithOne(p => p.Subject)
                 .HasForeignKey(p => p.SubjectId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+                e.Property(p => p.Name).HasMaxLength(100);
             });
 
             modelBuilder.Entity<Exercise>(e =>  
@@ -143,6 +159,14 @@ namespace Thesis.data
                 e.HasOne(p => p.Answer)
                 .WithOne(p => p.Exercise)
                 .OnDelete(DeleteBehavior.Cascade);
+
+                e.Ignore(p => p.LevelEnum);
+
+            });
+
+            modelBuilder.Entity<Answer>(e =>    
+            {
+                e.Property(p => p.CorrectText).HasMaxLength(150);
 
             });
 
@@ -152,6 +176,8 @@ namespace Thesis.data
                 .WithOne(p => p.LearningPath)
                 .HasForeignKey(p => p.LearningPathId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+                e.Ignore(p => p.EnumType);
 
             });
 
@@ -168,6 +194,8 @@ namespace Thesis.data
                 .HasForeignKey(p => p.CreatedBy)
                 .OnDelete(DeleteBehavior.SetNull);
 
+                e.Ignore(p => p.TypeEnum);
+
             });
 
             modelBuilder.Entity<Classroom>(e =>
@@ -181,6 +209,9 @@ namespace Thesis.data
                 .WithOne(p => p.Classroom)
                 .HasForeignKey(p => p.ClassroomId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+                e.Property(p => p.ClassName).HasMaxLength(25);
+                e.Property(p => p.ClassroomKey).HasMaxLength(30);
 
             });
 
