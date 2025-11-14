@@ -28,6 +28,8 @@ namespace Thesis.data
         public DbSet<StudentBadges> StudentBadges { get; set; }
         public DbSet<StudentExercises> StudentExercises { get; set; }
         public DbSet<Subject> Subjects { get; set; }
+        public DbSet<LoginHistory> LoginHistories { get; set; }
+        public DbSet<TimeBlocker> TimeBlockers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -63,6 +65,11 @@ namespace Thesis.data
                .HasForeignKey(p => p.UserFromId)
                .OnDelete(DeleteBehavior.Cascade);
 
+                e.HasMany(p => p.LoginHistory)
+                .WithOne(p => p.User)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             });
 
             modelBuilder.Entity<Student>(e =>
@@ -71,6 +78,10 @@ namespace Thesis.data
                 .WithMany(p => p.Students)
                 .HasForeignKey(p => p.ParentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasOne(p => p.TimeBlocker)
+                .WithOne(p => p.Student)
+                .OnDelete(DeleteBehavior.Cascade);
 
             });
 

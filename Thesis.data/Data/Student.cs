@@ -11,23 +11,17 @@ namespace Thesis.data.Data
         //finished exercises
         public List<StudentExercises> StudentExercises { get; set; } = new List<StudentExercises>();
                 
-        //classroom stuff
         public Classroom Classroom{ get; set; }
         public int? ClassroomId { get; set; }
         public bool IsAppendingToClass { get; set; }     
         public bool IsAcceptedToClass { get; set; }
 
-        //
-
         public List<StudentBadges> StudentBadges { get; set; } = new List<StudentBadges>();
 
-
-        //konto ucznia powiazane z rodzicem!
         public int ParentId { get; set; }
         public Parent Parent { get; set; }
 
-
-
+        public TimeBlocker TimeBlocker { get; set; }
 
     }
 }

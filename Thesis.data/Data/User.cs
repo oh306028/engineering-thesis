@@ -26,7 +26,7 @@ namespace Thesis.data.Data
         public string PasswordHash { get; set; }
 
         public List<Notification> RecivedNotifications { get; set; } = new List<Notification>();
-        public List<Notification> SentNotifications { get; set; } = new List<Notification>();   
-
+        public List<Notification> SentNotifications { get; set; } = new List<Notification>();
+        public List<LoginHistory> LoginHistory { get; set; } = new List<LoginHistory>();
     }
 }
