@@ -9,7 +9,7 @@ using Thesis.data.Interfaces;
 namespace Thesis.data.Data
 {
 
-    public class HomeWork : IEntity, IAuditable
+    public class HomeWork : IEntity
     {
         public int Id { get; set; }
 
@@ -19,12 +19,11 @@ namespace Thesis.data.Data
         public int ClassroomId { get; set; }
         public Classroom Classroom { get; set; }
 
-        public int ExerciseId { get; set; }
-        public Exercise Exercise { get; set; }
+        public List<Exercise> Exercises { get; set; } = new List<Exercise>();
 
-        public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; set; }   
         public DateTime DateModified { get; set; }
-        public int CreatedBy { get; set; }
+        public int? TeacherId { get; set; }
         public Teacher Teacher { get; set; } 
 
     }

@@ -25,8 +25,10 @@ namespace Thesis.data.Data
         public Answer Answer { get; set; }
 
         public int SubjectId { get; set; }
-        public Subject Subject { get; set; }       
+        public Subject Subject { get; set; }
 
+        public int? HomeWorkId { get; set; }
+        public HomeWork HomeWork { get; set; }
 
     }
 }

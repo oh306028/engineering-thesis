@@ -14,8 +14,6 @@ namespace Thesis.data.Data
         public string CorrectText { get; set; }
         public int? CorrectNumber { get; set; }
         public int? CorrectOption { get; set; }
-        public List<object> CorrectList { get; set; } = new List<object>();
-
         public int ExerciseId { get; set; } 
         public Exercise Exercise { get; set; }
 

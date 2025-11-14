@@ -10,7 +10,7 @@ namespace Thesis.data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions config) : base(config)
+        public AppDbContext(DbContextOptions<AppDbContext> config) : base(config)
         {
 
         }
@@ -58,12 +58,12 @@ namespace Thesis.data
                 e.HasMany(p => p.RecivedNotifications)
                 .WithOne(p => p.UserTo)
                 .HasForeignKey(p => p.UserToId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
                 e.HasMany(p => p.SentNotifications)
                .WithOne(p => p.UserFrom)
                .HasForeignKey(p => p.UserFromId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
                 e.HasMany(p => p.LoginHistory)
                 .WithOne(p => p.User)
@@ -160,7 +160,7 @@ namespace Thesis.data
                 e.HasMany(p => p.Exercises)
                 .WithOne(p => p.Subject)
                 .HasForeignKey(p => p.SubjectId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
 
                 e.Property(p => p.Name).HasMaxLength(100);
             });
@@ -186,7 +186,7 @@ namespace Thesis.data
                 e.HasMany(p => p.Badges)
                 .WithOne(p => p.LearningPath)
                 .HasForeignKey(p => p.LearningPathId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
 
                 e.Ignore(p => p.EnumType);
 
@@ -198,11 +198,16 @@ namespace Thesis.data
                 e.HasOne(p => p.Classroom)
                 .WithMany(p => p.HomeWorks)
                 .HasForeignKey(p => p.ClassroomId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
                 e.HasOne(p => p.Teacher)
                 .WithMany(p => p.HomeWorks)
-                .HasForeignKey(p => p.CreatedBy)
+                .HasForeignKey(p => p.TeacherId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+                e.HasMany(p => p.Exercises)
+                .WithOne(p => p.HomeWork)
+                .HasForeignKey(p => p.HomeWorkId)
                 .OnDelete(DeleteBehavior.SetNull);
 
                 e.Ignore(p => p.TypeEnum);
@@ -220,6 +225,11 @@ namespace Thesis.data
                 .WithOne(p => p.Classroom)
                 .HasForeignKey(p => p.ClassroomId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+                e.HasOne(p => p.Teacher)
+                .WithMany(p => p.Classrooms)
+                .HasForeignKey(p => p.TeacherId)
+                .OnDelete(DeleteBehavior.Restrict);
 
                 e.Property(p => p.ClassName).HasMaxLength(25);
                 e.Property(p => p.ClassroomKey).HasMaxLength(30);
