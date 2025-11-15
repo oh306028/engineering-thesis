@@ -11,6 +11,8 @@ namespace Thesis.data.Data
     public class LearningPath : IEntity 
     {
         public int Id { get; set; }
+
+        public Guid PublicId { get; set; }
         public List<LearningPathExercises> LearningPathExercises { get; set; } = new List<LearningPathExercises>(); 
 
         public int Level { get; set; }  //1,2,3

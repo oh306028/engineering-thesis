@@ -11,6 +11,8 @@ namespace Thesis.data.Data
     {
         public int Id { get; set; }
 
+        public Guid PublicId { get; set; }  
+
         public string CorrectText { get; set; }
         public int? CorrectNumber { get; set; }
         public int? CorrectOption { get; set; }

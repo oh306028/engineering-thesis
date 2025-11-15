@@ -13,6 +13,8 @@ namespace Thesis.data.Data
     {
         public int Id { get; set; }
 
+        public Guid PublicId { get; set; }  
+
         public int Type { get; set; }
         public HomeWorkType TypeEnum => (HomeWorkType)Type;
 

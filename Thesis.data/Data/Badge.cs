@@ -11,7 +11,8 @@ namespace Thesis.data.Data
     {
         public int Id {get; set; }
 
-        public string Name { get; set; }
+        public Guid PublicId { get; set; }
+        public string Name { get; set; }    
 
 
         //informacje na temat wygladu takiej odznaki

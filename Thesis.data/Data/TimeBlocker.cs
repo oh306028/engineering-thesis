@@ -11,6 +11,8 @@ namespace Thesis.data.Data
     {
         public int Id { get; set; }
 
+        public Guid PublicId { get; set; }  
+
         public Student Student { get; set; }
         public int StudentId { get; set; }
 

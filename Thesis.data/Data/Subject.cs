@@ -10,6 +10,8 @@ namespace Thesis.data.Data
     public class Subject : IEntity
     {
         public int Id { get; set; }
+
+        public Guid PublicId { get; set; }  
         public string Name { get; set; }
 
         public List<Exercise> Exercises { get; set; } = new List<Exercise>();
