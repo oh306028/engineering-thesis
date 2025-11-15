@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Thesis.app;
 using Thesis.data;
+using AutoMapper;
 
 namespace Thesis.api
 {
@@ -23,9 +25,16 @@ namespace Thesis.api
                 cfg.RegisterServicesFromAssembly(typeof(AppAssemblyMarker).Assembly);
             });
 
+            builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 
             app.UseHttpsRedirection();
 
