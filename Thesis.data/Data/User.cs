@@ -10,6 +10,8 @@ namespace Thesis.data.Data
     public class User : IEntity, IAuditable, IRemovable
     {
         public int Id { get ; set ; }
+
+        public Guid PublicId { get; set; }  
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public int CreatedBy { get; set; }
