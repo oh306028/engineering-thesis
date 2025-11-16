@@ -1,4 +1,4 @@
-﻿namespace Thesis.api.Modules.Answer.Update
+﻿namespace Thesis.app.Dtos.Answer
 {
     public class AnswerModel
     {

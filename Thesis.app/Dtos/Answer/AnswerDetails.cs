@@ -1,4 +1,4 @@
-﻿namespace Thesis.api.Modules.Answer.Details
+﻿namespace Thesis.app.Dtos.Answer
 {
     public class AnswerDetails
     {

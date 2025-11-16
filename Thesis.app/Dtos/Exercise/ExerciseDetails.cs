@@ -1,7 +1,7 @@
-﻿using Thesis.api.Modules.Answer.Details;
+﻿using Thesis.app.Dtos.Answer;
 using Thesis.data.Data;
 
-namespace Thesis.api.Modules.Exercise.Details
+namespace Thesis.app.Dtos.Exercise
 {
     public class ExerciseDetails
     {
