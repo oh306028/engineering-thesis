@@ -4,6 +4,12 @@ using System.Reflection;
 using Thesis.app;
 using Thesis.data;
 using AutoMapper;
+using FluentValidation;
+using Thesis.app.Dtos.Account;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Thesis.api
 {
@@ -17,6 +23,8 @@ namespace Thesis.api
 
             builder.Services.AddControllers();
 
+            builder.Services.AddValidatorsFromAssemblyContaining<AccountRegisterModelValidator>();
+
             builder.Services.AddDbContext<AppDbContext>(options =>
                  options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -28,6 +36,44 @@ namespace Thesis.api
             builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            var jwtOptionSection = builder.Configuration.GetRequiredSection("Jwt");
+            builder.Services.Configure<JwtOptions>(jwtOptionSection);
+
+
+            var jwtOptions = new JwtOptions();
+            jwtOptionSection.Bind(jwtOptions);
+            builder.Services.AddSingleton(jwtOptions);
+
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                    new UnprocessableEntityObjectResult(context.ModelState);
+            });
+
+
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(jwtOptions =>
+            {
+                var configKey = jwtOptionSection["Key"];
+                var key = Encoding.UTF8.GetBytes(configKey);
+
+
+
+                jwtOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = jwtOptionSection["Issuer"],
+                    ValidAudience = jwtOptionSection["Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+
+                };
+            });
 
             var app = builder.Build();
 

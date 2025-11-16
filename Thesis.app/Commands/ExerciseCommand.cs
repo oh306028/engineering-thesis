@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Thesis.api.Extensions;
-using Thesis.api.Modules.Answer.Update;
+using Thesis.app.Dtos.Answer;
 using Thesis.app.Exceptions;
 using Thesis.data;
 using Thesis.data.Interfaces;
