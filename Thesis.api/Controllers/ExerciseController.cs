@@ -65,7 +65,6 @@ namespace Thesis.api.Controllers
             var query = new ExerciseQuery.GetAnswer(id);
             var result = await mediatR.Send(query);   
 
-
             return Ok(mapper.Map<AnswerDetails>(result));
         }
 

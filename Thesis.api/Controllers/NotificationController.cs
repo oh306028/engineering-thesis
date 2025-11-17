@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Thesis.app.Dtos.Badge;
 using Thesis.app.Dtos.Notification;
@@ -23,8 +24,8 @@ namespace Thesis.api.Controllers
 
         }
 
-
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<BadgeDetails>>> GetCurrentUserNotifications()  
         {
             var query = new NotificationQuery.GetUserNotifications(User.Id());

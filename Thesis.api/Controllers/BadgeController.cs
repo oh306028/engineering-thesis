@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Thesis.api.Modules.Exercise.Details;
 using Thesis.app.Dtos.Badge;
 using Thesis.app.Queries;
 
