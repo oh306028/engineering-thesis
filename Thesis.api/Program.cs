@@ -4,12 +4,13 @@ using System.Reflection;
 using Thesis.app;
 using Thesis.data;
 using AutoMapper;
-using FluentValidation;
 using Thesis.app.Dtos.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 namespace Thesis.api
 {
@@ -24,6 +25,7 @@ namespace Thesis.api
             builder.Services.AddControllers();
 
             builder.Services.AddValidatorsFromAssemblyContaining<AccountRegisterModelValidator>();
+            builder.Services.AddFluentValidationAutoValidation();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
                  options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -39,6 +41,13 @@ namespace Thesis.api
 
             var jwtOptionSection = builder.Configuration.GetRequiredSection("Jwt");
             builder.Services.Configure<JwtOptions>(jwtOptionSection);
+
+
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                    new UnprocessableEntityObjectResult(context.ModelState);
+            });
 
 
             var jwtOptions = new JwtOptions();
@@ -81,6 +90,7 @@ namespace Thesis.api
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 

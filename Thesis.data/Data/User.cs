@@ -18,7 +18,8 @@ namespace Thesis.data.Data
         public DateTime? DateDeleted { get; set; }
         public int? DeletedBy { get; set; }
 
-
+        public string Role { get; set; }    
+        public string Login { get; set; }   
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName => $"{FirstName} {LastName}";

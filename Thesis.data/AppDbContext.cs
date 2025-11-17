@@ -40,6 +40,9 @@ namespace Thesis.data
             {
                 e.Property(p => p.Email)
                     .HasMaxLength(60);
+                
+                e.Property(p => p.Login)
+                    .HasMaxLength(30);
 
                 e.Property(p => p.FirstName)
                     .HasMaxLength(50);

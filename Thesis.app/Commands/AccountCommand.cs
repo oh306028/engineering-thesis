@@ -21,7 +21,7 @@ namespace Thesis.app.Commands
 {
     public class AccountCommand
     {
-        public class Register : IRequest<Unit> 
+        public class Register : IRequest<AccountLoginModel> 
         {
             public AccountRegisterModel Model{ get; set; }
 
@@ -31,7 +31,7 @@ namespace Thesis.app.Commands
             }
         }
 
-        public class Login : IRequest<string>   
+        public class Login : IRequest<AccountSuccesLoginModel>   
         {
             public AccountLoginModel Model { get; set; }
 
@@ -43,7 +43,7 @@ namespace Thesis.app.Commands
 
     }
 
-    public class RegisterHandler : IRequestHandler<AccountCommand.Register, Unit>, IHandler
+    public class RegisterHandler : IRequestHandler<AccountCommand.Register, AccountLoginModel>, IHandler
     {
         public AppDbContext DbContext { get; set; }
 
@@ -52,7 +52,7 @@ namespace Thesis.app.Commands
             DbContext = dbContext;
         }
 
-        public async Task<Unit> Handle(AccountCommand.Register request, CancellationToken cancellationToken)
+        public async Task<AccountLoginModel> Handle(AccountCommand.Register request, CancellationToken cancellationToken)
         {
             var passwordHasher = new PasswordHasher<User>();
             
@@ -63,6 +63,7 @@ namespace Thesis.app.Commands
 
             parentAccount.Email = request.Model.Email;
 
+            parentAccount.Login = request.Model.Login;
             parentAccount.PasswordHash = passwordHash;
             parentAccount.FirstName = request.Model.ParentFirstName;
             parentAccount.LastName = request.Model.ParentLastName;
@@ -71,19 +72,25 @@ namespace Thesis.app.Commands
             studentAccount.FirstName = request.Model.StudentFirstName;
             studentAccount.LastName = request.Model.StudentLastName;
             studentAccount.DateOfBirth = request.Model.StudentDateOfBirth;
+            studentAccount.Login = request.Model.Login + "-u";
 
 
             await DbContext.Users.AddRangeAsync(parentAccount, studentAccount);
             studentAccount.Parent = parentAccount;
 
-            await DbContext.SaveChangesAsync(); 
+            await DbContext.SaveChangesAsync();
 
-            return Unit.Value;
+            return new AccountLoginModel()
+            {
+                Login = request.Model.Login,
+                Password = request.Model.Password
+            };
+
 
         }
     }
 
-    public class LoginHandler : IRequestHandler<AccountCommand.Login, string>, IHandler    
+    public class LoginHandler : IRequestHandler<AccountCommand.Login, AccountSuccesLoginModel>, IHandler    
     {
         public AppDbContext DbContext { get; set; }
         public JwtOptions AuthenticationOptions { get; set; }
@@ -94,9 +101,9 @@ namespace Thesis.app.Commands
             AuthenticationOptions = authenticationOptions;
         }
 
-        public async Task<string> Handle(AccountCommand.Login request, CancellationToken cancellationToken)
+        public async Task<AccountSuccesLoginModel> Handle(AccountCommand.Login request, CancellationToken cancellationToken)
         {
-            var user = await DbContext.Users.FirstOrDefaultAsync(p => p.Email == request.Model.Email);
+            var user = await DbContext.Users.FirstOrDefaultAsync(p => p.Login == request.Model.Login);
             
             if (user == null)
                 throw new NotFoundException("Błędny login lub hasło");
@@ -124,7 +131,7 @@ namespace Thesis.app.Commands
             await DbContext.SaveChangesAsync();
 
             var token = GenerateToken(user);
-            return token;
+            return new AccountSuccesLoginModel() {Token = token};
         }
 
         private string GenerateToken(User user) 
@@ -135,7 +142,7 @@ namespace Thesis.app.Commands
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Name, user.Login),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
 
             }),

@@ -23,6 +23,8 @@ namespace Thesis.app.Dtos.Account
 
         public string StudentFirstName { get; set; }
         public string StudentLastName { get; set; } 
+
+        public string Login { get; set; }   
     }
 
     public class AccountRegisterModelValidator : AbstractValidator<AccountRegisterModel>
@@ -36,15 +38,24 @@ namespace Thesis.app.Dtos.Account
             RuleFor(p => p.ParentLastName).NotEmpty().WithMessage("Pole jest wymagane");
             RuleFor(p => p.StudentFirstName).NotEmpty().WithMessage("Pole jest wymagane");
             RuleFor(p => p.StudentLastName).NotEmpty().WithMessage("Pole jest wymagane");
+            RuleFor(p => p.Login).NotEmpty().WithMessage("Pole jest wymagane");
+            RuleFor(p => p.Email).NotEmpty().WithMessage("Pole jest wymagane"); 
 
             RuleFor(p => p.Email)
-             .NotEmpty()
              .EmailAddress()
-             .MustAsync(async (email, context) =>
-             {  
-                 return !await dbContext.Users.AnyAsync(u => u.Email == email, context);
-             })
-             .WithMessage("Email jest zajęty");
+             .Custom((email, context) =>
+             {
+                 if (dbContext.Users.Any(u => u.Email == email))
+                     context.AddFailure("Istnieje już taki email");
+             });
+
+            RuleFor(p => p.Login)
+             .Custom((login, context) =>
+             {
+                 if (dbContext.Users.Any(u => u.Login == login))
+                     context.AddFailure("Istnieje już taki login");
+
+             });
 
             RuleFor(p => p.Password).NotEmpty().WithMessage("Pole jest wymagane");
             RuleFor(p => p.ConfirmPassword).NotEmpty().WithMessage("Pole jest wymagane");

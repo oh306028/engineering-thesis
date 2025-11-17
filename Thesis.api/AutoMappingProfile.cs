@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Thesis.api.Extensions;
-using Thesis.api.Modules.Answer.Details;
-using Thesis.api.Modules.Answer.Update;
-using Thesis.api.Modules.Exercise.Details;
+using Thesis.app.Dtos.Answer;
+using Thesis.app.Dtos.Badge;
+using Thesis.app.Dtos.Exercise;
+using Thesis.app.Dtos.Notification;
 using Thesis.data.Data;
 
 namespace Thesis.api
@@ -22,6 +23,21 @@ namespace Thesis.api
 
 
             CreateMap<Answer, AnswerDetails>();
+            CreateMap<Badge, BadgeDetails>();
+
+
+            CreateMap<Notification, NotificationList>()
+                .ForMember(p => p.NotificationType, m => m.MapFrom(p => p.TypeEnum.GetDescription()))
+                .ForMember(p => p.NotifiedBy, m => m.MapFrom(p => !p.IsSystemNotification ? p.UserFrom.FullName : "Powiadomienie systemowe"));
+
+
+            CreateMap<Notification, NotificationDetails>()
+                .ForMember(p => p.NotificationType, m => m.MapFrom(p => p.TypeEnum.GetDescription()))
+                .ForMember(p => p.NotifiedBy, m => m.MapFrom(p => !p.IsSystemNotification ? p.UserFrom.FullName : "Powiadomienie systemowe"))
+                .ForMember(p => p.NotificationDate, m => m.MapFrom(p => p.DateCreated.ToString("g")))
+                .ForMember(p => p.Message, m => m.MapFrom(p => p.Message.Name));
+
+
 
         }
     }
