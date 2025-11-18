@@ -1,8 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -115,7 +116,7 @@ namespace Thesis.app.Commands
             loginAttempt.LoginDate = DateTime.Now;
             loginAttempt.UserId = user.Id;
 
-            if (result == PasswordVerificationResult.Failed)
+            if (result == Microsoft.AspNetCore.Identity.PasswordVerificationResult.Failed)
             {               
                 loginAttempt.IsSucceeded = false;
                
@@ -143,7 +144,8 @@ namespace Thesis.app.Commands
                 Subject = new ClaimsIdentity(new[]
                 {
                 new Claim(ClaimTypes.Name, user.Login),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Role),
 
             }),
                 Expires = DateTime.UtcNow.AddDays(3),
