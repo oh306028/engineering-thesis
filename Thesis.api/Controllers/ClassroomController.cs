@@ -22,7 +22,7 @@ namespace Thesis.api.Controllers
 
         }   
 
-        public async ActionResult<Task> CreateClassroom(ClassroomCreateModel model)
+        public async Task<ActionResult> CreateClassroom(ClassroomCreateModel model)
         {
             var command = new ClassroomCommand.CreateClassroom(model, User.Id());
             await mediatR.Send(command);

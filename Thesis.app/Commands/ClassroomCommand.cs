@@ -51,6 +51,8 @@ namespace Thesis.app.Commands
 
             DbContext.Classrooms.Add(newClass);
             await DbContext.SaveChangesAsync();
+
+            return Unit.Value;
         }
 
         private string GenerateKey()
