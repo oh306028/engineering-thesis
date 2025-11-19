@@ -2,8 +2,10 @@
 using Thesis.api.Extensions;
 using Thesis.app.Dtos.Answer;
 using Thesis.app.Dtos.Badge;
+using Thesis.app.Dtos.Classroom;
 using Thesis.app.Dtos.Exercise;
 using Thesis.app.Dtos.Notification;
+using Thesis.app.Dtos.Student;
 using Thesis.data.Data;
 
 namespace Thesis.api
@@ -24,6 +26,14 @@ namespace Thesis.api
 
             CreateMap<Answer, AnswerDetails>();
             CreateMap<Badge, BadgeDetails>();
+            CreateMap<Student, StudentDetails>();
+
+            CreateMap<Classroom, ClassroomDetails>()
+                .ForMember(p => p.TeacherName, o => o.MapFrom(p => p.Teacher.FullName));
+
+            CreateMap<Badge, ClassroomList>()
+                .ForMember(p => p.PublicId, o => o.MapFrom(p => p.PublicId.ToString()));
+
 
 
             CreateMap<Notification, NotificationList>()

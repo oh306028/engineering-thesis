@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Thesis.app.Dtos;
 using Thesis.app.Dtos.Classroom;
 using Thesis.app.Exceptions;
 using Thesis.data;

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Thesis.app.Commands;
-using Thesis.app.Dtos;
 using Thesis.app.Dtos.Classroom;
 using Thesis.app.Extensions;
+using Thesis.app.Queries;
 
 namespace Thesis.api.Controllers
 {
@@ -63,6 +63,31 @@ namespace Thesis.api.Controllers
             await mediatR.Send(command);
 
             return Ok();
+        }
+
+        //TO DO:
+        //panel zarzadzania klasa (akceptacja / usuwanie uczniow)
+        //panel tworzenia zadan domowych, powtorek itd
+        //panel powiadomien, wiadomosci
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ClassroomDetails>> GetDetails(string id)
+        {
+
+            var query = new ClassroomQuery.GetDetails(id);
+            var result = await mediatR.Send(query);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet]
+        public async Task<ActionResult<ClassroomList>> GetList()    
+        {
+
+            var query = new ClassroomQuery.GetList(User.Id());  
+            var result = await mediatR.Send(query);
+            return Ok(result);
         }
 
 
