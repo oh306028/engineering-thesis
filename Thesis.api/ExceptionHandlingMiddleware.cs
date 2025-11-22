@@ -10,21 +10,35 @@ namespace Thesis.api
             {
                 await next(context);
             }
-            catch(NotFoundException notFoundEx)
+            catch (NotFoundException ex)
             {
-                context.Response.StatusCode = 404;
-                await context.Response.WriteAsync(notFoundEx.Message);
+                await WriteJsonError(context, 404, ex.Message);
             }
-            catch (WrongAnswerException wrongAnswEx)
+            catch (WrongAnswerException ex)
             {
-                context.Response.StatusCode = 422;
-                await context.Response.WriteAsync(wrongAnswEx.Message);
+                await WriteJsonError(context, 422, ex.Message);
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = 500;
-                await context.Response.WriteAsync(ex.Message);
+                await WriteJsonError(context, 500, "Wystąpił nieoczekiwany błąd.");
             }
         }
+
+        private async Task WriteJsonError(HttpContext context, int statusCode, string message)
+        {
+            context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/json";
+
+            var error = new
+            {
+                status = statusCode,
+                error = message
+            };
+
+            var json = System.Text.Json.JsonSerializer.Serialize(error);
+
+            await context.Response.WriteAsync(json);
+        }
     }
+
 }

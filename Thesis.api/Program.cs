@@ -54,13 +54,6 @@ namespace Thesis.api
             jwtOptionSection.Bind(jwtOptions);
             builder.Services.AddSingleton(jwtOptions);
 
-            builder.Services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.InvalidModelStateResponseFactory = context =>
-                    new UnprocessableEntityObjectResult(context.ModelState);
-            });
-
-
 
             builder.Services.AddAuthentication(options =>
             {

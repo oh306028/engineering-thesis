@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -17,6 +16,7 @@ using Thesis.app.Exceptions;
 using Thesis.data;
 using Thesis.data.Data;
 using Thesis.data.Interfaces;
+
 
 namespace Thesis.app.Commands
 {
@@ -116,7 +116,7 @@ namespace Thesis.app.Commands
             loginAttempt.LoginDate = DateTime.Now;
             loginAttempt.UserId = user.Id;
 
-            if (result == Microsoft.AspNetCore.Identity.PasswordVerificationResult.Failed)
+            if (result == PasswordVerificationResult.Failed)
             {               
                 loginAttempt.IsSucceeded = false;
                
