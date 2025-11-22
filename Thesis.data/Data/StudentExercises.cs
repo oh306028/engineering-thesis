@@ -12,6 +12,12 @@ namespace Thesis.data.Data
         public Exercise Exercise { get; set; }
         public int ExerciseId { get; set; }
         public Student Student { get; set; }
-        public int StudentId { get; set; }  
+        public int StudentId { get; set; }
+
+
+        public int Attempts { get; set; }            
+        public int WrongAnswers { get; set; }         
+        public bool IsCompleted { get; set; }
+        public DateTime? LastAttempt { get; set; }
     }
 }

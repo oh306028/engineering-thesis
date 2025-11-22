@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Thesis.data.Data;
+using Thesis.data.Interfaces;
 
 namespace Thesis.data
 {
@@ -52,6 +53,9 @@ namespace Thesis.data
 
                 e.Ignore(p => p.FullName);
 
+                e.Property(e => e.PublicId)
+             .HasDefaultValueSql("NEWID()");
+
                 e.HasDiscriminator<string>("Role")
                     .HasValue<Student>("Student")
                     .HasValue<Teacher>("Teacher")
@@ -91,12 +95,16 @@ namespace Thesis.data
             modelBuilder.Entity<Badge>(e =>
             {
                 e.Property(p => p.Name).HasMaxLength(200);
+                e.Property(e => e.PublicId)
+             .HasDefaultValueSql("NEWID()");
 
             });
 
             modelBuilder.Entity<Achievement>(e =>
             {
                 e.Property(p => p.Name).HasMaxLength(200);
+                e.Property(e => e.PublicId)
+             .HasDefaultValueSql("NEWID()");
 
             });
 
@@ -130,6 +138,10 @@ namespace Thesis.data
                 .HasForeignKey(p => p.ExerciseId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+                e.Property(p => p.IsCompleted).HasDefaultValue(false);
+                e.Property(p => p.Attempts).HasDefaultValue(0);
+                e.Property(p => p.WrongAnswers).HasDefaultValue(0);
+
             });
 
             modelBuilder.Entity<LearningPathExercises>(e =>
@@ -155,6 +167,8 @@ namespace Thesis.data
                 .OnDelete(DeleteBehavior.Cascade);
 
                 e.Ignore(p => p.TypeEnum);
+                e.Property(e => e.PublicId)
+             .HasDefaultValueSql("NEWID()");
 
             });
 
@@ -166,6 +180,8 @@ namespace Thesis.data
                 .OnDelete(DeleteBehavior.Restrict);
 
                 e.Property(p => p.Name).HasMaxLength(100);
+                e.Property(e => e.PublicId)
+             .HasDefaultValueSql("NEWID()");
             });
 
             modelBuilder.Entity<Exercise>(e =>  
@@ -175,12 +191,16 @@ namespace Thesis.data
                 .OnDelete(DeleteBehavior.Cascade);
 
                 e.Ignore(p => p.LevelEnum);
+                e.Property(e => e.PublicId)
+             .HasDefaultValueSql("NEWID()");
 
             });
 
             modelBuilder.Entity<Answer>(e =>    
             {
                 e.Property(p => p.CorrectText).HasMaxLength(150);
+                e.Property(e => e.PublicId)
+             .HasDefaultValueSql("NEWID()");
 
             });
 
@@ -192,6 +212,11 @@ namespace Thesis.data
                 .OnDelete(DeleteBehavior.Restrict);
 
                 e.Ignore(p => p.EnumType);
+                e.Property(e => e.PublicId)
+             .HasDefaultValueSql("NEWID()");
+
+                e.Property(p => p.Name)
+                .HasMaxLength(100);
 
             });
 
@@ -213,6 +238,9 @@ namespace Thesis.data
                 .HasForeignKey(p => p.HomeWorkId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+                e.Property(e => e.PublicId)
+              .HasDefaultValueSql("NEWID()");
+
                 e.Ignore(p => p.TypeEnum);
 
             });
@@ -233,6 +261,9 @@ namespace Thesis.data
                 .WithMany(p => p.Classrooms)
                 .HasForeignKey(p => p.TeacherId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+                e.Property(e => e.PublicId)
+             .HasDefaultValueSql("NEWID()");
 
                 e.Property(p => p.ClassName).HasMaxLength(25);
                 e.Property(p => p.ClassroomKey).HasMaxLength(30);

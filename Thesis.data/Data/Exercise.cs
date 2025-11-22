@@ -17,17 +17,17 @@ namespace Thesis.data.Data
         public int CreatedBy { get; set; }
         public DateTime? DateDeleted { get; set; }
         public int? DeletedBy { get; set; }
-
+        public string Content { get; set; }     
         public int Level { get; set; }  
         public ExerciseLevels LevelEnum => (ExerciseLevels)Level;
         public List<LearningPathExercises> LearningPathExercises { get; set; } = new List<LearningPathExercises>(); 
         public List<StudentExercises> StudentExercises { get; set; } = new List<StudentExercises>();
-        public bool IsDone { get; set; }    
         public Answer Answer { get; set; }
 
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }
 
+        //zadania do zadan domowych beda tylko w liscie "ZADANIA DOMOWE" => niedostepne dla sciezki nauki!
         public int? HomeWorkId { get; set; }
         public HomeWork HomeWork { get; set; }
 

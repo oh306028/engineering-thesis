@@ -17,6 +17,8 @@ namespace Thesis.data.Data
 
         public int Level { get; set; }  //1,2,3
 
+        public string Name { get; set; }    
+
         public int Type { get; set; }
         public LearningPathType EnumType => (LearningPathType)Type;
 
