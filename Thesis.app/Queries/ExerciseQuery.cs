@@ -21,6 +21,7 @@ namespace Thesis.app.Queries
             {
                 
             }
+
         }
 
         public class GetListByStudentId : IRequest<List<Exercise>>
@@ -139,7 +140,6 @@ namespace Thesis.app.Queries
 
 
     }
-
 
 
 }

@@ -52,6 +52,32 @@ namespace Thesis.data
                 dbContext.LearningPaths.AddRange(young, experienced, hard);
                 await dbContext.SaveChangesAsync();
             }
+        
+            if (!dbContext.Exercises.Any())
+            {
+
+                var young = dbContext.LearningPaths.First(p => p.Name == "Młody Podróżnik");
+                var math = dbContext.Subjects.First(p => p.Name == "Matematyka");
+
+                var ex1 = new Exercise()
+                {
+                    Level = 1,
+                    Answer = new Answer() { CorrectNumber = 100},
+                    Content = "Jaki jest wynik mnożenia 10 x 10?",
+                    Subject = math,
+                    
+                };
+
+                var learningPathEx = new LearningPathExercises() { Exercise = ex1, LearningPath = young };
+
+
+                dbContext.Exercises.AddRange(ex1);
+                dbContext.LearningPathExercises.AddRange(learningPathEx);
+                await dbContext.SaveChangesAsync();
+
+            }
+
+
 
 
 

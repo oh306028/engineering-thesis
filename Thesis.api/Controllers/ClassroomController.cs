@@ -66,9 +66,13 @@ namespace Thesis.api.Controllers
         }
 
         //TO DO:
-        //panel zarzadzania klasa (akceptacja / usuwanie uczniow)
         //panel tworzenia zadan domowych, powtorek itd
         //panel powiadomien, wiadomosci
+        //panel listy studentow
+
+        //z poziomu ucznia =>
+        //koledzy z klasy
+        //widok drabinki (czyli najwiecej rozwiazanych zadan itd)
 
         [Authorize]
         [HttpGet("{id}")]

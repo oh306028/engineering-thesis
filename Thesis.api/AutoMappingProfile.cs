@@ -4,8 +4,10 @@ using Thesis.app.Dtos.Answer;
 using Thesis.app.Dtos.Badge;
 using Thesis.app.Dtos.Classroom;
 using Thesis.app.Dtos.Exercise;
+using Thesis.app.Dtos.LearningPath;
 using Thesis.app.Dtos.Notification;
 using Thesis.app.Dtos.Student;
+using Thesis.app.Resolvers;
 using Thesis.data.Data;
 
 namespace Thesis.api
@@ -20,13 +22,21 @@ namespace Thesis.api
              .ForMember(dest => dest.LearningPath, opt => opt.MapFrom(src =>
                  src.LearningPathExercises
                     .Select(lp => lp.LearningPath.EnumType.GetDescription())
-                    .ToList()
+                    .First()
              ));
 
 
             CreateMap<Answer, AnswerDetails>();
             CreateMap<Badge, BadgeDetails>();
             CreateMap<Student, StudentDetails>();
+            CreateMap<Exercise, PathExercise>()
+                .ForMember(p => p.PublicId, o => o.MapFrom(p => p.PublicId.ToString()))
+                .ForMember(p => p.IsComleted, o => o.MapFrom<PathExerciseResolver>());
+
+
+            CreateMap<LearningPath, LearningPathDetails>()  
+                .ForMember(p => p.Type, o => o.MapFrom(p => p.EnumType.GetDescription()))
+                .ForMember(p => p.PublicId, o => o.MapFrom(p => p.PublicId.ToString()));
 
             CreateMap<Classroom, ClassroomDetails>()
                 .ForMember(p => p.TeacherName, o => o.MapFrom(p => p.Teacher.FullName));

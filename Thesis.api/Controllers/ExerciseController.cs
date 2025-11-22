@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Thesis.app.Commands;
 using Thesis.app.Dtos.Answer;
 using Thesis.app.Dtos.Exercise;
+using Thesis.app.Extensions;
 using Thesis.app.Queries;
 
 namespace Thesis.api.Controllers
 {
     [Route("api/exercise")]
     [ApiController]
+    [Authorize]
     public class ExerciseController : ControllerBase
     {
         private readonly IMediator mediatR;
@@ -50,10 +53,10 @@ namespace Thesis.api.Controllers
             return Ok(mapper.Map<ExerciseDetails>(results));
         }
 
-        [HttpPost("{exerciseId}/answer")]   
+        [HttpPost("{id}/answer")]   
         public async Task<ActionResult> Answer(string id, [FromBody]AnswerModel model)
         {
-            var command = new ExerciseCommand.Answer(id, model);   
+            var command = new ExerciseCommand.Answer(id, model, User.Id());   
             await mediatR.Send(command); 
               
             return Ok();
