@@ -16,7 +16,7 @@ namespace Thesis.api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +50,9 @@ namespace Thesis.api
             });
 
 
+
+            builder.Services.AddHttpContextAccessor();
+
             var jwtOptions = new JwtOptions();
             jwtOptionSection.Bind(jwtOptions);
             builder.Services.AddSingleton(jwtOptions);
@@ -78,6 +81,12 @@ namespace Thesis.api
             });
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                await DataSeeder.SeedAsync(context);
+            }
 
             // Configure the HTTP request pipeline.
 
