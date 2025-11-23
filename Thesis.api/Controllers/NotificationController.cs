@@ -11,6 +11,7 @@ namespace Thesis.api.Controllers
 {
     [Route("api/notification")]
     [ApiController]
+    [Authorize]
     public class NotificationController : ControllerBase
     {
 
