@@ -23,6 +23,16 @@ namespace Thesis.api.Controllers
 
         }
 
+        [HttpPost("teacher/register")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult> Register([FromForm] TeacherAccountRegisterModel model)
+        {
+            var command = new AccountCommand.RegisterTeacher(model);
+            var result = await mediatR.Send(command);   
+
+            return Accepted(result);        
+        }
+
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] AccountRegisterModel model)
         {

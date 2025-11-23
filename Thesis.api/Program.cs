@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Thesis.app.Services;
 
 namespace Thesis.api
 {
@@ -42,6 +43,17 @@ namespace Thesis.api
             var jwtOptionSection = builder.Configuration.GetRequiredSection("Jwt");
             builder.Services.Configure<JwtOptions>(jwtOptionSection);
 
+            var azureOptionSection = builder.Configuration.GetRequiredSection("AzureStorage");
+            builder.Services.Configure<AzureStorageOptions>(azureOptionSection);
+                    
+            var azureOptions = new AzureStorageOptions();
+            jwtOptionSection.Bind(azureOptions);
+            builder.Services.AddSingleton(azureOptions);    
+
+            builder.Services.AddSingleton<IFileService, FileService>();
+
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -49,7 +61,14 @@ namespace Thesis.api
                     new UnprocessableEntityObjectResult(context.ModelState);
             });
 
+            //TO DO:
+            // admin pannel:
+            //endpoint for accepting teacher registration
+            //
 
+            //TO DO:
+            //admin has to check and accept that account!
+            //
 
             builder.Services.AddHttpContextAccessor();
 
@@ -81,6 +100,16 @@ namespace Thesis.api
             });
 
             var app = builder.Build();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                    c.RoutePrefix = string.Empty;
+                });
+            }
 
             using (var scope = app.Services.CreateScope())
             {

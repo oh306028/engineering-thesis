@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 using Thesis.api;
 using Thesis.app.Dtos.Account;
 using Thesis.app.Exceptions;
+using Thesis.app.Services;
 using Thesis.data;
 using Thesis.data.Data;
 using Thesis.data.Interfaces;
@@ -30,6 +32,18 @@ namespace Thesis.app.Commands
             {
                 Model = model;
             }
+        }
+
+        public class RegisterTeacher : IRequest<Unit>   
+        {
+            public TeacherAccountRegisterModel Model { get; set; }
+            public IFormFile File { get; set; }     
+
+            public RegisterTeacher(TeacherAccountRegisterModel model)
+            {
+                Model = model;
+                File = model.File;        
+            }   
         }
 
         public class Login : IRequest<AccountSuccesLoginModel>   
@@ -76,6 +90,7 @@ namespace Thesis.app.Commands
             studentAccount.Login = request.Model.Login + "-u";
 
 
+
             await DbContext.Users.AddRangeAsync(parentAccount, studentAccount);
             studentAccount.Parent = parentAccount;
 
@@ -87,6 +102,49 @@ namespace Thesis.app.Commands
                 Password = request.Model.Password
             };
 
+
+        }
+    }
+
+    public class TeacherRegisterHandler : IRequestHandler<AccountCommand.RegisterTeacher, Unit>, IHandler
+    {
+        public AppDbContext DbContext { get; set; }
+        public IFileService FileService { get; }
+        public AzureStorageOptions StorageOptions { get; }
+
+        public TeacherRegisterHandler(AppDbContext dbContext, IFileService fileService, AzureStorageOptions storageOptions)  
+        {
+            DbContext = dbContext;
+            FileService = fileService;
+            StorageOptions = storageOptions;
+        }
+
+        public async Task<Unit> Handle(AccountCommand.RegisterTeacher request, CancellationToken cancellationToken)
+        {
+            var passwordHasher = new PasswordHasher<User>();    
+
+            var account = new Teacher();
+
+            var passwordHash = passwordHasher.HashPassword(account, request.Model.Password);
+
+            account.Email = request.Model.Email;
+
+            account.Login = request.Model.Login;
+            account.PasswordHash = passwordHash;
+            account.FirstName = request.Model.FirstName;
+            account.LastName = request.Model.LastName;
+            account.IsAccepted = false;
+
+
+            var blobName = $"{StorageOptions.ContainerName}/{Guid.NewGuid()}_{request.File.FileName}";
+            var url = await FileService.UploadAsync(request.File, blobName);
+
+            account.CertificateUrl = url;
+
+            await DbContext.Users.AddAsync(account, cancellationToken);
+            await DbContext.SaveChangesAsync();
+
+            return Unit.Value;  
 
         }
     }
@@ -108,6 +166,10 @@ namespace Thesis.app.Commands
             
             if (user == null)
                 throw new NotFoundException("Błędny login lub hasło");
+
+            if (user is Teacher teacher && teacher.IsAccepted.HasValue && !teacher.IsAccepted.Value)
+                throw new NotFoundException("Konto oczekuje na akceptację przez administratora");
+
 
             var passwordHasher = new PasswordHasher<User>();
             var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Model.Password);
