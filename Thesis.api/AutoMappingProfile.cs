@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Thesis.api.Extensions;
+using Thesis.app.Dtos.Admin;
 using Thesis.app.Dtos.Answer;
 using Thesis.app.Dtos.Badge;
 using Thesis.app.Dtos.Classroom;
@@ -7,6 +8,7 @@ using Thesis.app.Dtos.Exercise;
 using Thesis.app.Dtos.LearningPath;
 using Thesis.app.Dtos.Notification;
 using Thesis.app.Dtos.Student;
+using Thesis.app.Queries;
 using Thesis.app.Resolvers;
 using Thesis.data.Data;
 
@@ -26,9 +28,24 @@ namespace Thesis.api
              ));
 
 
-            CreateMap<Answer, AnswerDetails>();
+            CreateMap<Answer, AnswerDetails>();   
             CreateMap<Badge, BadgeDetails>();
             CreateMap<Student, StudentDetails>();
+            CreateMap<User, UserListModel>();
+
+
+            CreateMap<Teacher, TeacherAttemptListModel>()
+                .ForMember(p => p.IsAccepted, o => o.MapFrom(p => p.IsAccepted.HasValue ? p.IsAccepted.Value : false))
+                .ForMember(p => p.PublicId, o => o.MapFrom(p => p.PublicId.ToString()));
+
+
+            CreateMap<Classroom, ClassroomListModel>()
+                .ForMember(p => p.TeacherName, o => o.MapFrom(p => p.Teacher.FullName));  
+
+            CreateMap<LoginHistory, LogginHistoryListModel>()
+                .ForMember(p => p.UserEmail, o => o.MapFrom(p => p.User.Email));
+
+
             CreateMap<Exercise, PathExercise>()
                 .ForMember(p => p.PublicId, o => o.MapFrom(p => p.PublicId.ToString()))
                 .ForMember(p => p.IsComleted, o => o.MapFrom<PathExerciseResolver>());
