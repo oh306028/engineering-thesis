@@ -18,6 +18,8 @@
 *.userosscache
 *.sln.docstates
 
+appsettings.json
+
 # Publish output
 publish/
 out/
