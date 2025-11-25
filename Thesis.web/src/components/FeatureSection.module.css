@@ -1,0 +1,139 @@
+.featureSection {
+  padding: 80px 32px;
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.featureContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.reversed .featureContent {
+  direction: rtl;
+}
+
+.reversed .featureText {
+  direction: ltr;
+}
+
+.featureImageContainer {
+  position: relative;
+}
+
+.featureImage {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 60px rgba(43, 36, 80, 0.15);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.featureImage:hover {
+  transform: scale(1.03) translateY(-10px);
+  box-shadow: 0 30px 80px rgba(43, 36, 80, 0.2);
+}
+
+.featureImage::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.featureImage:hover::before {
+  transform: translateX(100%);
+}
+
+.accentYellow {
+  background: linear-gradient(135deg, #fff9e6 0%, #ffe6a7 100%);
+}
+
+.accentPink {
+  background: linear-gradient(135deg, #fff1f0 0%, #ffd1d1 100%);
+}
+
+.accentGreen {
+  background: linear-gradient(135deg, #e8fff1 0%, #c8f7d6 100%);
+}
+
+.accentBlue {
+  background: linear-gradient(135deg, #f0f9ff 0%, #d9e9ff 100%);
+}
+
+.imagePlaceholder {
+  font-size: 8rem;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+}
+
+.featureText {
+  padding: 20px;
+}
+
+.featureTitle {
+  font-size: 2.5rem;
+  color: #2b2450;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+
+.featureDescription {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #3b2f5c;
+}
+
+@media (max-width: 968px) {
+  .featureSection {
+    padding: 60px 24px;
+  }
+
+  .featureContent {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .reversed .featureContent {
+    direction: ltr;
+  }
+
+  .featureTitle {
+    font-size: 2rem;
+  }
+
+  .featureDescription {
+    font-size: 1rem;
+  }
+
+  .imagePlaceholder {
+    font-size: 6rem;
+  }
+}
+.actualImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}

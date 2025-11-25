@@ -1,0 +1,148 @@
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #2b2450 0%, #3b2f5c 100%);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+.navScrolled {
+  padding: 12px 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 1.8rem;
+  color: #fff;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.brand:hover {
+  transform: scale(1.05);
+}
+
+.brandIcon {
+  font-size: 1.6rem;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.links {
+  display: flex;
+  gap: 12px;
+}
+
+.link {
+  background: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #3b2f5c;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(59, 47, 92, 0.12);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.link::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s, height 0.5s;
+}
+
+.link:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.link:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(59, 47, 92, 0.2);
+}
+
+.linkRegister {
+  background: linear-gradient(135deg, #ffd26a, #ffb347);
+}
+
+.linkRegister:hover {
+  background: linear-gradient(135deg, #ffe08a, #ffc367);
+}
+
+.linkLogin {
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
+}
+
+.linkLogin:hover {
+  background: linear-gradient(135deg, #c8fffa, #ffeef3);
+}
+
+.linkTeacher {
+  background: linear-gradient(135deg, #c8f7d6, #b8e6ff);
+}
+
+.linkTeacher:hover {
+  background: linear-gradient(135deg, #d8fff6, #c8f6ff);
+}
+
+.linkIcon {
+  font-size: 1.1rem;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 12px 16px;
+  }
+
+  .brand {
+    font-size: 1.4rem;
+  }
+
+  .links {
+    gap: 8px;
+  }
+
+  .link {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+
+  .linkIcon {
+    display: none;
+  }
+}
