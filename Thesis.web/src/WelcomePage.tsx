@@ -81,7 +81,7 @@ const WelcomePage: React.FC = () => {
             <h2 className={styles.ctaTitle}>Gotowy na przygodę z nauką?</h2>
             <p className={styles.ctaText}>
               Dołącz do tysięcy zadowolonych rodzin i nauczycieli, którzy już
-              korzystają z EduFun!
+              korzystają z P&L!
             </p>
             <button className={styles.ctaButton}>
               Zacznij za darmo
