@@ -88,15 +88,6 @@ namespace Thesis.api
                     new UnprocessableEntityObjectResult(context.ModelState);
             });
 
-            //TO DO:
-            // admin pannel:
-            //endpoint for accepting teacher registration
-            //
-
-            //TO DO:
-            //admin has to check and accept that account!
-            //
-
             builder.Services.AddHttpContextAccessor();
 
             var jwtOptions = new JwtOptions();
@@ -126,6 +117,18 @@ namespace Thesis.api
                 };
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("frontend", policy =>
+                {
+                    policy
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithOrigins("http://localhost:5173");
+                });
+            });
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -137,6 +140,10 @@ namespace Thesis.api
                     c.RoutePrefix = string.Empty;
                 });
             }
+           
+
+            app.UseCors("frontend");
+
 
             using (var scope = app.Services.CreateScope())
             {
