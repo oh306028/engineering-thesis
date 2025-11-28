@@ -34,7 +34,7 @@ namespace Thesis.api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] AccountRegisterModel model)
+        public async Task<ActionResult<AccountLoginModel>> Register([FromBody] AccountRegisterModel model)
         {
             var command = new AccountCommand.Register(model);
             var result = await mediatR.Send(command);
