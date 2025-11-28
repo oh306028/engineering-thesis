@@ -8,8 +8,8 @@ import AccountService from "../accountService.tsx";
 function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginForm>({
-    Login: "",
-    Password: "",
+    login: "",
+    password: "",
   });
   const [errors, setErrors] = useState<ValidationError>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -118,14 +118,14 @@ function Login() {
 
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.formGroup}>
-                <label htmlFor="Login" className={styles.label}>
+                <label htmlFor="login" className={styles.label}>
                   Login
                 </label>
                 <input
                   type="text"
-                  id="Login"
-                  name="Login"
-                  value={formData.Login}
+                  id="login"
+                  name="login"
+                  value={formData.login}
                   onChange={handleChange}
                   className={`${styles.input} ${
                     errors.Login ? styles.inputError : ""
@@ -141,14 +141,14 @@ function Login() {
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="Password" className={styles.label}>
+                <label htmlFor="password" className={styles.label}>
                   Hasło
                 </label>
                 <input
                   type="password"
-                  id="Password"
-                  name="Password"
-                  value={formData.Password}
+                  id="password"
+                  name="password"
+                  value={formData.password}
                   onChange={handleChange}
                   className={`${styles.input} ${
                     errors.Password ? styles.inputError : ""
