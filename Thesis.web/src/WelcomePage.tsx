@@ -6,8 +6,10 @@ import img1 from "./assets/img1.png";
 import img2 from "./assets/img2.png";
 import img3 from "./assets/img3.png";
 import img4 from "./assets/img4.png";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const WelcomePage: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className={styles.page}>
       <NavBar />
@@ -83,7 +85,10 @@ const WelcomePage: React.FC = () => {
               Dołącz do tysięcy zadowolonych rodzin i nauczycieli, którzy już
               korzystają z P&L!
             </p>
-            <button className={styles.ctaButton}>
+            <button
+              className={styles.ctaButton}
+              onClick={() => navigate("/accounts/register")}
+            >
               Zacznij za darmo
               <span className={styles.ctaArrow}>→</span>
             </button>

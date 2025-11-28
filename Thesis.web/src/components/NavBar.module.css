@@ -8,8 +8,10 @@
   border-bottom: 2px solid rgba(0, 0, 0, 0.15);
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
-  position: sticky;
+  position: fixed; /* ZMIENIONE ze sticky na fixed */
   top: 0;
+  left: 0; /* DODANE */
+  right: 0; /* DODANE */
   z-index: 100;
   transition: all 0.3s ease;
 }

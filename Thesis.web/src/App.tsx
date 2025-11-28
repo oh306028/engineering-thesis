@@ -3,6 +3,7 @@ import Login from "./modules/account/views/Login";
 import Register from "./modules/account/views/Register";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./App.css";
 
 function App() {
   const navigate = useNavigate();
