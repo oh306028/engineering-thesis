@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Thesis.api.Extensions;
 using Thesis.app.Dtos.Answer;
+using Thesis.app.Events;
 using Thesis.app.Exceptions;
 using Thesis.data;
 using Thesis.data.Data;
@@ -35,12 +36,14 @@ namespace Thesis.app.Commands
     public class AnswerHandler : IRequestHandler<ExerciseCommand.Answer, Unit>, IHandler
     {
         public AppDbContext DbContext { get; set; }
+        public IMediator MediatR { get; set; }  
 
-        public AnswerHandler(AppDbContext dbContext)
+        public AnswerHandler(AppDbContext dbContext, IMediator mediatR)
         {
             DbContext = dbContext;
+            this.MediatR = mediatR;
         }
-
+            
         public async Task<Unit> Handle(ExerciseCommand.Answer request, CancellationToken cancellationToken)
         {
             var exercise = await DbContext.Exercises
@@ -48,6 +51,8 @@ namespace Thesis.app.Commands
                 .SingleAsync(p => p.PublicId.ToString() == request.ExercisePublicId);
 
             var answer = exercise.Answer;
+
+            var student = DbContext.Users.OfType<Student>().FirstOrDefault(p => p.Id == request.StudentId);
 
             var studentExercise = await DbContext.StudentExercises
                  .FirstOrDefaultAsync(se => se.StudentId == request.StudentId && se.ExerciseId == exercise.Id);
@@ -70,7 +75,7 @@ namespace Thesis.app.Commands
 
             try
             {
-                if ((request.Model.CorrectOption.HasValue && request.Model.CorrectOption != answer?.CorrectOption) || (request.Model.CorrectNumber.HasValue && request.Model.CorrectNumber != answer?.CorrectNumber) || 
+                if ((!(string.IsNullOrEmpty(request.Model.CorrectOption) && request.Model.CorrectOption.ToLower() != answer.CorrectOption?.ToLower())) || (request.Model.CorrectNumber.HasValue && request.Model.CorrectNumber != answer?.CorrectNumber) || 
                     (!string.IsNullOrEmpty(request.Model.CorrectText) && request.Model.CorrectText != answer.CorrectText))
                 {
                     studentExercise.WrongAnswers++;
@@ -78,6 +83,9 @@ namespace Thesis.app.Commands
                 }
 
                 studentExercise.IsCompleted = true;
+                student.CurrentPoints += 5;
+
+                await MediatR.Publish(new PointsAddedEvent(student.Id, 5, student.CurrentPoints), cancellationToken);
             }
             catch (WrongAnswerException)
             {

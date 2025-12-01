@@ -121,6 +121,11 @@ namespace Thesis.app.Commands
 
             var student = (Student)DbContext.Users.Single(p => p.Id == request.StudentId);
 
+            if (student.IsAppendingToClass)
+                throw new NotFoundException("Wysłano już prośbę o dołączenie do innej klasy");
+
+            student.IsAppendingToClass = true;  
+
             classroom.Students.Add(student);
             await DbContext.SaveChangesAsync();
 

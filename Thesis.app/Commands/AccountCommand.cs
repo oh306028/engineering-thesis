@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Thesis.api;
 using Thesis.app.Dtos.Account;
+using Thesis.app.Events;
 using Thesis.app.Exceptions;
 using Thesis.app.Services;
 using Thesis.data;
@@ -90,6 +91,8 @@ namespace Thesis.app.Commands
             studentAccount.Login = request.Model.Login + "-u";
 
 
+            studentAccount.AccountLevelId = DbContext.AccountLevels.FirstOrDefault(p => p.Level == 1).Id;
+
 
             await DbContext.Users.AddRangeAsync(parentAccount, studentAccount);
             studentAccount.Parent = parentAccount;
@@ -153,11 +156,13 @@ namespace Thesis.app.Commands
     {
         public AppDbContext DbContext { get; set; }
         public JwtOptions AuthenticationOptions { get; set; }
+        public IMediator MediatR { get; }
 
-        public LoginHandler(AppDbContext dbContext, JwtOptions authenticationOptions)
+        public LoginHandler(AppDbContext dbContext, JwtOptions authenticationOptions, IMediator mediatR)
         {
             DbContext = dbContext;
             AuthenticationOptions = authenticationOptions;
+            MediatR = mediatR;
         }
 
         public async Task<AccountSuccesLoginModel> Handle(AccountCommand.Login request, CancellationToken cancellationToken)
@@ -192,6 +197,9 @@ namespace Thesis.app.Commands
 
             DbContext.LoginHistories.Add(loginAttempt);
             await DbContext.SaveChangesAsync();
+
+            if(user is Student student)
+                await MediatR.Publish(new LogInEvent(student.Id, DateTime.Now));
 
             var token = GenerateToken(user);
             return new AccountSuccesLoginModel() {Token = token};
