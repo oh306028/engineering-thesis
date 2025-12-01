@@ -12,17 +12,11 @@ namespace Thesis.data.Data
         public int Id {get; set; }
 
         public Guid PublicId { get; set; }
-        public string Name { get; set; }    
+        public string Name { get; set; }
+        public string Emote { get; set; } 
 
-
-        //informacje na temat wygladu takiej odznaki
-        //informacje na temat poziomu, za ktory mozna zdobyc odznake
-        //informacje na temat osiagniecia, ktore trzeba zrobic by zdobyc odznake
-
-
-        //sciezka w ktorej mozna zdobyc odznake
         public LearningPath LearningPath { get; set; }
-        public int LearningPathId { get; set; }
+        public int? LearningPathId { get; set; }
 
         //odznaki studenta
         public List<StudentBadges> StudentBadges { get; set; } = new List<StudentBadges>();

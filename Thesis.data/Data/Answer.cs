@@ -12,10 +12,13 @@ namespace Thesis.data.Data
         public int Id { get; set; }
 
         public Guid PublicId { get; set; }  
-
         public string CorrectText { get; set; }
         public int? CorrectNumber { get; set; }
-        public int? CorrectOption { get; set; }
+
+        public string CorrectOption { get; set; }
+        public string IncorrectOption1 { get; set; }
+        public string IncorrectOption2 { get; set; }
+        public string IncorrectOption3 { get; set; }
         public int ExerciseId { get; set; } 
         public Exercise Exercise { get; set; }
 

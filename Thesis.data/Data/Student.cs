@@ -23,5 +23,20 @@ namespace Thesis.data.Data
 
         public TimeBlocker TimeBlocker { get; set; }
 
+        public int CurrentPoints { get; set; }  
+        public AccountLevel AccountLevel { get; set; }
+        public int AccountLevelId { get; set; } 
+        public List<AchievementStudents> AchievementStudents { get; set; } = new();
+
+        public int CountNewBadges()
+        {
+            return StudentBadges.Count(sb => !sb.IsSeen);
+        }
+
+        public int CountBadges()
+        {
+            return StudentBadges.Count();
+        }
+
     }
 }
