@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Thesis.app.Dtos.Badge
 {
-    public class BadgeDetails
+    public class AchievementDetails
     {
-        public string PublicId { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
+        public BadgeDetails Badge { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace Thesis.app.Dtos.Exercise
         public string Level { get; set; }
         public string LearningPath { get; set; }    
         public bool IsDone { get; set; }
+        public string Content { get; set; }
 
         public AnswerDetails Answer { get; set; }
 

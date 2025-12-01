@@ -11,7 +11,6 @@ namespace Thesis.app.Dtos.Classroom
     {
         public string ClassName { get; set; }   
         public string ClassroomKey { get; set; }    
-        public List<StudentDetails> Students { get; set; }
         public string TeacherName { get; set; } 
 
     }

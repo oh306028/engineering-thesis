@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thesis.app.Dtos.LearningPath
+namespace Thesis.app.Dtos.Badge
 {
-    public class PathExercise
+    public class BadgeDetails
     {
         public string PublicId { get; set; }
-        public bool IsCompleted { get; set; }       
+        public string Name { get; set; }
+        public string Emote { get; set; }   
     }
-}   
+}

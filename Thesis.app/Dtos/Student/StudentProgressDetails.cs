@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Thesis.app.Dtos.Student
 {
-    public class StudentDetails
+    public class StudentProgressDetails
     {
-        public string PublicId { get; set; }    
-        public string Name { get; set; }
-
         public int Level { get; set; }
         public int CurrentPoints { get; set; }
-        public int BadgesCount { get; set; }
 
-        public DateTime LastSeenAt { get; set; }    
+        public int MinLevelPoints { get; set; }
+        public int MaxLevelPoints { get; set; }
+
+        public bool NewLevel { get; set; }  
+
 
     }
 }
