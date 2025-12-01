@@ -26,8 +26,7 @@ namespace Thesis.api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<List<BadgeDetails>>> GetCurrentUserNotifications()  
+        public async Task<ActionResult<List<NotificationList>>> GetCurrentUserNotifications()  
         {
             var query = new NotificationQuery.GetUserNotifications(User.Id());
             var results = await mediatR.Send(query);          
@@ -35,5 +34,22 @@ namespace Thesis.api.Controllers
             return Ok(mapper.Map<List<NotificationList>>(results));
         }
 
+        //[HttpPost]  
+        //public async Task<ActionResult> SendNotification(NotificationModel model)
+        //{
+        //    var command = new NotificationCommand.SendNotification(User.Id());
+        //    await mediatR.Send(command);
+
+        //    return Accepted();  
+        //}
+
+        //[HttpGet("types")]
+        //public async Task<ActionResult<List<BadgeDetails>>> GetCurrentUserNotifications()
+        //{
+        //    var query = new NotificationQuery.GetUserNotifications(User.Id());
+        //    var results = await mediatR.Send(query);
+
+        //    return Ok(mapper.Map<List<NotificationList>>(results));
+        //}
     }
 }

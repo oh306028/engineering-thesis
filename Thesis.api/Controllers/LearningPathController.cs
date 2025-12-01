@@ -8,6 +8,7 @@ using Thesis.app.Dtos.Resource;
 using Thesis.app.Extensions;
 using Thesis.app.Queries;
 using Thesis.data.Data;
+using Thesis.data.Enums;
 
 namespace Thesis.api.Controllers
 {
@@ -27,9 +28,9 @@ namespace Thesis.api.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<LearningPathDetails>>> GetPaths()   
+        public async Task<ActionResult<List<LearningPathDetails>>> GetPaths([FromQuery]LearningPathType type)   
         {
-            var query = new LearningPathQuery.GetList();    
+            var query = new LearningPathQuery.GetList(type);    
             var results = await mediatR.Send(query);
 
             return Ok(mapper.Map<List<LearningPathDetails>>(results));  

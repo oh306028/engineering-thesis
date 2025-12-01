@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Thesis.app.Commands;
 using Thesis.app.Dtos.Classroom;
+using Thesis.app.Dtos.Student;
 using Thesis.app.Extensions;
 using Thesis.app.Queries;
 
@@ -65,23 +66,43 @@ namespace Thesis.api.Controllers
             return Ok();
         }
 
-        //TO DO:
-        //panel tworzenia zadan domowych, powtorek itd
-        //panel powiadomien, wiadomosci
-        //panel listy studentow
-
-        //z poziomu ucznia =>
-        //koledzy z klasy
-        //widok drabinki (czyli najwiecej rozwiazanych zadan itd)
-
-        [Authorize]
+        [Authorize(Roles = "Teacher, Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<ClassroomDetails>> GetDetails(string id)
         {
 
             var query = new ClassroomQuery.GetDetails(id);
             var result = await mediatR.Send(query);
-            return Ok(result);
+            return Ok(mapper.Map<ClassroomDetails>(result));
+        }
+
+        [Authorize(Roles = "Student")]
+        [HttpGet("mine-classroom")]
+        public async Task<ActionResult<ClassroomDetails>> GetMineClassroom()   
+        {
+
+            var query = new ClassroomQuery.GetMineClassDetails(User.Id());
+            var result = await mediatR.Send(query);     
+            return Ok(mapper.Map<ClassroomDetails>(result));
+        }
+
+
+        [Authorize]
+        [HttpGet("{id}/students")]
+        public async Task<ActionResult<List<StudentDetails>>> GetStudentsForClassroom(string id)
+        {
+            var query = new ClassroomQuery.GetStudentsForClassroom(id);
+            var result = await mediatR.Send(query);     
+            return Ok(mapper.Map<List<StudentDetails>>(result));
+        }
+
+        [Authorize(Roles = "Teacher, Admin")]
+        [HttpGet("{id}/student-requests")]
+        public async Task<ActionResult<List<StudentDetails>>> GetClassroomRequests(string id)   
+        {
+            var query = new ClassroomQuery.GetStudentRequests(id);  
+            var result = await mediatR.Send(query);
+            return Ok(mapper.Map<List<StudentDetails>>(result));
         }
 
         [Authorize(Roles = "Teacher")]
@@ -91,7 +112,7 @@ namespace Thesis.api.Controllers
 
             var query = new ClassroomQuery.GetList(User.Id());  
             var result = await mediatR.Send(query);
-            return Ok(result);
+            return Ok(mapper.Map<List<ClassroomList>>(result));
         }
 
 
