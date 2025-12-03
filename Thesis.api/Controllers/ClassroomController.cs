@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Thesis.app.Commands;
 using Thesis.app.Dtos.Classroom;
+using Thesis.app.Dtos.HomeWork;
 using Thesis.app.Dtos.Student;
 using Thesis.app.Extensions;
 using Thesis.app.Queries;
@@ -114,6 +115,25 @@ namespace Thesis.api.Controllers
             var result = await mediatR.Send(query);
             return Ok(mapper.Map<List<ClassroomList>>(result));
         }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpPost("{id}/homework")]  
+        public async Task<ActionResult> CreateHomeWorkExercise(string id, [FromBody]HomeWorkModel model)
+        {
+            var command = new ClassroomCommand.CreateHomeWork(model, User.Id(), id);
+            await mediatR.Send(command);
+
+            return Accepted();
+        }
+
+        [Authorize(Roles = "Student")]
+        [HttpGet("mine-homework")]  
+        public async Task<ActionResult<List<HomeworkDetails>>> GetMyHomeWork()       
+        {
+            var query = new ClassroomQuery.GetMineHomeWork(User.Id());
+            var result = await mediatR.Send(query);     
+            return Ok(mapper.Map<List<HomeworkDetails>>(result));   
+        }   
 
 
 
