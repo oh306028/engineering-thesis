@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Thesis.app.Dtos.Classroom;
+using Thesis.app.Dtos.HomeWork;
+using Thesis.app.Events;
 using Thesis.app.Exceptions;
 using Thesis.data;
 using Thesis.data.Data;
@@ -21,6 +23,20 @@ namespace Thesis.app.Commands
             }
 
         }   
+
+        public class CreateHomeWork : IRequest<Unit>
+        {
+            public HomeWorkModel Model { get; set; }
+            public int TeacherId { get; set; }
+            public string ClassroomId { get; set; }
+            public CreateHomeWork(HomeWorkModel model, int teacherId, string classroomId)
+            {
+                Model = model;  
+                TeacherId = teacherId;
+                ClassroomId = classroomId;
+            }   
+
+        }
 
         public class JoinClassroom : IRequest<Unit>
         {
@@ -54,6 +70,47 @@ namespace Thesis.app.Commands
 
 
     }
+    public class CreateHomeWork : IRequestHandler<ClassroomCommand.CreateHomeWork, Unit>, IHandler
+    {
+        public AppDbContext DbContext { get; set; }
+        public IMediator MediatR { get; }
+
+        public CreateHomeWork(AppDbContext dbContext, IMediator mediatR)
+        {
+            DbContext = dbContext;
+            MediatR = mediatR;
+        }
+
+        public async Task<Unit> Handle(ClassroomCommand.CreateHomeWork request, CancellationToken cancellationToken)
+        {
+
+            var classroom = DbContext.Classrooms.FirstOrDefault(p => p.PublicId == Guid.Parse(request.ClassroomId));
+
+            var homeWork = new HomeWork()
+            {
+                ClassroomId = classroom.Id,
+                Type = (int)request.Model.Type,
+                DateCreated = DateTime.Now,
+                DeadLine = request.Model.DeadLine,
+                TeacherId = request.TeacherId,
+                DateModified = DateTime.Now
+
+            };
+
+            request.Model.Exercises.ForEach(p =>
+            {
+               homeWork.Exercises.Add(new Exercise(){ DateCreated = DateTime.Now, Content = p.Content, CreatedBy = request.TeacherId });
+            });
+
+            DbContext.HomeWorks.Add(homeWork);
+            await DbContext.SaveChangesAsync();
+
+            await MediatR.Publish(new CreatedHomeWorkEvent(classroom.Id));
+
+            return Unit.Value;
+        }
+    }
+
 
     public class CreateClassroomHandler : IRequestHandler<ClassroomCommand.CreateClassroom, Unit>, IHandler
     {
