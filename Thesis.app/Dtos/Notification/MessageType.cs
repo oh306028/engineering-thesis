@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Thesis.data.Enums;
 
 namespace Thesis.app.Dtos.Notification
 {
-    public class NotificationModel
+    public class MessageType
     {
-        public string UserToId { get; set; }    
-        public string MessageId { get; set; }  
-
+        public string Message { get; set; }
+        public string MessageId { get; set; }   
     }
 }

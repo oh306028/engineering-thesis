@@ -14,6 +14,8 @@ namespace Thesis.app.Dtos.Notification
 
         public bool IsSeen { get; set; }
 
-        public string NotificationType { get; set; }    
+        public string NotificationType { get; set; }
+
+        public string Message { get; set; } 
     }
 }
