@@ -93,7 +93,10 @@ namespace Thesis.app.Commands
                 DateCreated = DateTime.Now,
                 DeadLine = request.Model.DeadLine,
                 TeacherId = request.TeacherId,
-                DateModified = DateTime.Now
+                DateModified = DateTime.Now,
+                Subject = request.Model.Subject,
+                Title = request.Model.Title,
+                Description = request.Model.Description
 
             };
 

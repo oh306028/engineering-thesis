@@ -48,22 +48,22 @@ namespace Thesis.api.Controllers
 
 
         [Authorize(Roles = "Teacher, Admin")] 
-        [HttpPost("{classroomId}/student/{id}/accept")]
-        public async Task<ActionResult> AcceptStudent(string classroomId, string id)    
+        [HttpPost("{classroomId}/student/{studentId}/accept")]
+        public async Task<ActionResult> AcceptStudent(string classroomId, string studentId)    
         {
-            var command = new ClassroomCommand.AcceptStudent(classroomId, id, User.Id(), true);
+            var command = new ClassroomCommand.AcceptStudent(classroomId, studentId, User.Id(), true);
             await mediatR.Send(command);
 
             return Ok();
         }
 
         [Authorize(Roles = "Teacher, Admin")]
-        [HttpPost("{classroomId}/student/{id}/decline")]
-        public async Task<ActionResult> DeclineStudent(string classroomId, string id)
+        [HttpPost("{classroomId}/student/{studentId}/decline")]
+        public async Task<ActionResult> DeclineStudent(string classroomId, string studentId)
         {
-            var command = new ClassroomCommand.AcceptStudent(classroomId, id, User.Id(), false);
-            await mediatR.Send(command);
-
+            var command = new ClassroomCommand.AcceptStudent(classroomId, studentId, User.Id(), false);
+            await mediatR.Send(command);    
+                
             return Ok();
         }
 
