@@ -14,6 +14,6 @@ namespace Thesis.data.Enums
         [Description("Nauka")]
         Regular,
         [Description("Wyzwanie")]
-        Challange,
+        Challenge,
     }
 }
