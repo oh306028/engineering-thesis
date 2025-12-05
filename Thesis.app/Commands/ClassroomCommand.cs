@@ -91,7 +91,7 @@ namespace Thesis.app.Commands
                 ClassroomId = classroom.Id,
                 Type = (int)request.Model.Type,
                 DateCreated = DateTime.Now,
-                DeadLine = request.Model.DeadLine,
+                DeadLine = request.Model.DeadLine.Value,
                 TeacherId = request.TeacherId,
                 DateModified = DateTime.Now,
                 Subject = request.Model.Subject,
