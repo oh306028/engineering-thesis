@@ -35,6 +35,7 @@ namespace Thesis.app.Dtos.Account
             RuleFor(p => p.Email).NotEmpty().WithMessage("Pole jest wymagane");
             RuleFor(p => p.FirstName).NotEmpty().WithMessage("Pole jest wymagane");
             RuleFor(p => p.LastName).NotEmpty().WithMessage("Pole jest wymagane");
+            RuleFor(p => p.File).NotEmpty().WithMessage("Pole jest wymagane");
 
             RuleFor(p => p.Email)
              .EmailAddress()

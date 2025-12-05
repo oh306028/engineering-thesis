@@ -15,7 +15,8 @@ namespace Thesis.app.Dtos.Student
         public int CurrentPoints { get; set; }
         public int BadgesCount { get; set; }
 
-        public DateTime LastSeenAt { get; set; }    
+        public DateTime LastSeenAt { get; set; }
+        public bool IsCurrentUser { get; set; }
 
     }
 }

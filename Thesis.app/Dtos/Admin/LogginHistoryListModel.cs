@@ -10,6 +10,6 @@ namespace Thesis.app.Dtos.Admin
     {
         public DateTime LoginDate { get; set; }
         public bool IsSucceeded { get; set; }
-        public string UserEmail { get; set; }         
+        public string Login { get; set; }           
     }
 }

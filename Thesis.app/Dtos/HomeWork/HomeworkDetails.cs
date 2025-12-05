@@ -12,6 +12,10 @@ namespace Thesis.app.Dtos.HomeWork
         public string Type { get; set; }
         public DateTime DeadLine { get; set; }      
         public DateTime DateCreated { get; set; }
-        public List<ExerciseHomeWorkDetails> Exercises { get; set; }    
+        public List<ExerciseHomeWorkDetails> Exercises { get; set; }
+        public string Subject { get; set; }
+        public string Description { get; set; }
+        public string Title { get; set; }
+        public string PublicId { get; set; }    
     }
 }

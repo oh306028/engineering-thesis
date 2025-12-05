@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thesis.app.Dtos.Badge;
 
 namespace Thesis.app.Dtos.LearningPath
 {
@@ -11,6 +12,8 @@ namespace Thesis.app.Dtos.LearningPath
         public string Name { get; set; }
         public string Type { get; set; }
         public int Level { get; set; }
-        public string PublicId { get; set; }    
+        public string PublicId { get; set; }
+
+        public List<BadgeDetails> Badges { get; set; }    
     }
 }
