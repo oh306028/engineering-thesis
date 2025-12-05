@@ -18,6 +18,8 @@ namespace Thesis.app.Queries
         
         }
 
+        
+
         public class Classes : IRequest<List<Classroom>>
         {
 
@@ -27,6 +29,17 @@ namespace Thesis.app.Queries
         {
 
         }
+
+        public class LogginsPerStudent : IRequest<List<LoginHistory>>
+        {
+            public int ParentId { get; set; }
+            public LogginsPerStudent(int parentId)
+            {
+                ParentId = parentId;
+            }
+
+        }
+
 
         public class TeacherAttempts : IRequest<List<Teacher>>
         {
@@ -95,6 +108,23 @@ namespace Thesis.app.Queries
         {
 
             return await DbContext.LoginHistories.Include(p => p.User).AsNoTracking().ToListAsync(cancellationToken);
+
+        }
+    }
+    public class GetLogginsPerStudent : IRequestHandler<AdminQuery.LogginsPerStudent, List<LoginHistory>>, IHandler
+    {
+        public AppDbContext DbContext { get; set; } 
+
+        public GetLogginsPerStudent(AppDbContext dbContext)
+        {
+            DbContext = dbContext;
+        }
+        public async Task<List<LoginHistory>> Handle(AdminQuery.LogginsPerStudent request, CancellationToken cancellationToken)
+        {
+            var parent = await DbContext.Users.OfType<Parent>().Include(p => p.Students).FirstOrDefaultAsync(p => p.Id == request.ParentId);
+            var loggins =  await DbContext.LoginHistories.Include(p => p.User).AsNoTracking().ToListAsync(cancellationToken);
+
+            return loggins.Where(p => p.UserId == parent.Students.First().Id).OrderByDescending(p => p.LoginDate).ToList(); 
 
         }
     }
