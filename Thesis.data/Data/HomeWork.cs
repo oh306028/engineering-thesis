@@ -21,12 +21,18 @@ namespace Thesis.data.Data
         public int ClassroomId { get; set; }
         public Classroom Classroom { get; set; }
 
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string Subject { get; set; } 
+
         public List<Exercise> Exercises { get; set; } = new List<Exercise>();
 
         public DateTime DateCreated { get; set; }   
         public DateTime DateModified { get; set; }
         public int? TeacherId { get; set; }
-        public Teacher Teacher { get; set; } 
+        public Teacher Teacher { get; set; }
+
+        public DateTime DeadLine { get; set; }  
 
     }
 }
