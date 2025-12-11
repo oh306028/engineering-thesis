@@ -12,7 +12,10 @@ namespace Thesis.data.Data
         public int Id { get; set; }
 
         public string Name { get; set; }
-        public Notification Notification { get; set; }
+        public List<Notification> Notifications { get; set; } = new();
+        public int NotificationId { get; set; }
+
+        public Guid PublicId { get; set; }      
 
 
     }
