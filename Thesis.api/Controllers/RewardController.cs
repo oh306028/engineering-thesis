@@ -10,7 +10,7 @@ using Thesis.data.Data;
 
 namespace Thesis.api.Controllers
 {
-    [Route("api/reward")]
+    [Route("api/rewards")]
     [ApiController]
     [Authorize]
     public class RewardController : ControllerBase
@@ -44,9 +44,9 @@ namespace Thesis.api.Controllers
         }
 
         [HttpPost("mark-as-seen")]
-        public async Task<ActionResult<bool>> MarkAsSeen([FromQuery] List<string> rewardIds)  
+        public async Task<ActionResult<bool>> MarkAsSeen()  
         {
-            var command = new BadgeCommand.MarkAsSeen(User.Id(), rewardIds); 
+            var command = new BadgeCommand.MarkAsSeen(User.Id()); 
             await mediatR.Send(command); 
                 
             return Accepted();  
