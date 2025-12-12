@@ -57,6 +57,16 @@ namespace Thesis.app.Commands
             }
         }
 
+        public class ImpersonateAsStudent : IRequest<AccountSuccesLoginModel>
+        {
+            public int UserId { get; set; }
+
+            public ImpersonateAsStudent(int userId)
+            {
+                UserId = userId;
+            }
+        }
+
     }
 
     public class RegisterHandler : IRequestHandler<AccountCommand.Register, AccountLoginModel>, IHandler
@@ -152,7 +162,8 @@ namespace Thesis.app.Commands
         }
     }
 
-    public class LoginHandler : IRequestHandler<AccountCommand.Login, AccountSuccesLoginModel>, IHandler    
+    public class LoginHandler : IRequestHandler<AccountCommand.Login, AccountSuccesLoginModel>,
+                                IRequestHandler<AccountCommand.ImpersonateAsStudent, AccountSuccesLoginModel>, IHandler    
     {
         public AppDbContext DbContext { get; set; }
         public JwtOptions AuthenticationOptions { get; set; }
@@ -218,7 +229,7 @@ namespace Thesis.app.Commands
                 new Claim(ClaimTypes.Role, user.Role),
 
             }),
-                Expires = DateTime.UtcNow.AddDays(3),
+                Expires = DateTime.UtcNow.AddMinutes(30),
                 Issuer = AuthenticationOptions.Issuer,
                 Audience = AuthenticationOptions.Audience,
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
@@ -226,6 +237,17 @@ namespace Thesis.app.Commands
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<AccountSuccesLoginModel> Handle(AccountCommand.ImpersonateAsStudent request, CancellationToken cancellationToken)
+        {
+            var parent = await DbContext.Users.OfType<Parent>().Include(p => p.Students).FirstOrDefaultAsync(p => p.Id == request.UserId);
+
+            var student = parent.Students.First();
+
+            await MediatR.Publish(new LogInEvent(student.Id, DateTime.Now));
+
+            return new AccountSuccesLoginModel() { Token = GenerateToken(student) };
         }
     }
 }
