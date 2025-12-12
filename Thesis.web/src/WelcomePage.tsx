@@ -15,7 +15,6 @@ const WelcomePage: React.FC = () => {
       <NavBar />
 
       <main className={styles.content}>
-        {/* Hero Section */}
         <section className={styles.hero}>
           <h1 className={styles.title}>
             <span className={styles.titleSparkle}>✨</span>
