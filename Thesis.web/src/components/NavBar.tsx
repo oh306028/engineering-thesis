@@ -22,7 +22,7 @@ const NavBar: React.FC = () => {
 
   return (
     <header className={`${styles.nav} ${scrolled ? styles.navScrolled : ""}`}>
-      <div className={styles.brand}>
+      <div onClick={() => navigate("/")} className={styles.brand}>
         <span className={styles.brandIcon}>🎨</span>
         Play & Learn
       </div>
