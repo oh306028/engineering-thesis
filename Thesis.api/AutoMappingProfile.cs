@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Thesis.api.Extensions;
 using Thesis.api.Resolvers;
+using Thesis.app.Dtos.Account;
 using Thesis.app.Dtos.Admin;
 using Thesis.app.Dtos.Answer;
 using Thesis.app.Dtos.Badge;
@@ -10,6 +11,7 @@ using Thesis.app.Dtos.HomeWork;
 using Thesis.app.Dtos.LearningPath;
 using Thesis.app.Dtos.Notification;
 using Thesis.app.Dtos.Student;
+using Thesis.app.Pagination;
 using Thesis.app.Queries;
 using Thesis.app.Resolvers;
 using Thesis.data.Data;
@@ -36,6 +38,8 @@ namespace Thesis.api
             CreateMap<Badge, BadgeDetails>();
             CreateMap<User, UserListModel>();
 
+            CreateMap<User, ProfileDetails>();
+
             CreateMap<HomeWork, HomeworkDetails>()
                 .ForMember(p => p.Type, o => o.MapFrom(p => p.TypeEnum.GetDescription()))
                 .ForMember(p => p.PublicId, o => o.MapFrom(p => p.PublicId.ToString()));
@@ -44,7 +48,8 @@ namespace Thesis.api
                 .ForMember(p => p.Level, o => o.MapFrom(p => p.AccountLevel.Level))
                 .ForMember(p => p.Name, o => o.MapFrom(p => p.FullName))
                 .ForMember(p => p.BadgesCount, o => o.MapFrom(p => p.CountBadges()))
-                .ForMember(p => p.LastSeenAt, o => o.MapFrom<StudentLastLoginResolver>());
+                .ForMember(p => p.IsCurrentUser, o => o.MapFrom<StudentCurrentUserResolver>())
+                .ForMember(p => p.LastSeenAt, o => o.MapFrom<StudentLastLoginResolver>());  
 
 
             CreateMap<Teacher, TeacherAttemptListModel>()
@@ -58,6 +63,10 @@ namespace Thesis.api
             CreateMap<LoginHistory, LogginHistoryListModel>()
                 .ForMember(p => p.Login, o => o.MapFrom(p => p.User.Login));
 
+            CreateMap<PaginationResult<LoginHistory>, PagedLogginHistoryListModel>();
+            CreateMap<PaginationResult<User>, PagedUserListModel>();
+            CreateMap<PaginationResult<Classroom>, PagedClassroomListModel>();
+            CreateMap<PaginationResult<Notification>, PagedNotificationDetails>();   
 
             CreateMap<Exercise, PathExercise>()
                 .ForMember(p => p.PublicId, o => o.MapFrom(p => p.PublicId.ToString()))

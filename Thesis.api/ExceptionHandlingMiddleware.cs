@@ -4,6 +4,12 @@ namespace Thesis.api
 {
     public class ExceptionHandlingMiddleware : IMiddleware
     {
+        public ILogger<ExceptionHandlingMiddleware> Logger { get; }
+        public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger)
+        {
+            Logger = logger;
+        }
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
@@ -21,6 +27,7 @@ namespace Thesis.api
             catch (Exception ex)
             {
                 await WriteJsonError(context, 500, "Wystąpił nieoczekiwany błąd.");
+                Logger.LogError($"Error: {DateTime.Now} : {ex.Message}");
             }
         }
 
