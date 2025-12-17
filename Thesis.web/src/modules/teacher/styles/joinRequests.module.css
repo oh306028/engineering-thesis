@@ -1,0 +1,173 @@
+.contentSection {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 20px 60px rgba(43, 36, 80, 0.08);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.contentTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2b2450;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.contentIcon {
+  font-size: 2.5rem;
+}
+
+.contentDescription {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.loadingState {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.1rem;
+  color: #6c757d;
+}
+
+.errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+.emptyRequests {
+  padding: 40px;
+  margin-top: 20px;
+  border: 2px dashed #ced4da;
+  border-radius: 16px;
+  text-align: center;
+  color: #6c757d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.emptyIcon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.requestList {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.requestItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: #fdfdfd;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.studentInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.studentName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2b2450;
+}
+
+.studentDetails {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.acceptButton,
+.declineButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.acceptButton {
+  background-color: #28a745;
+  color: white;
+}
+
+.acceptButton:hover:not(:disabled) {
+  background-color: #1e7e34;
+}
+
+.declineButton {
+  background-color: #dc3545;
+  color: white;
+}
+
+.declineButton:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.processingButton {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: #6c757d !important;
+}
+
+.navIcon {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+}
+
+@media (max-width: 600px) {
+  .requestItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .actionButtons {
+    width: 100%;
+    justify-content: space-around;
+  }
+}

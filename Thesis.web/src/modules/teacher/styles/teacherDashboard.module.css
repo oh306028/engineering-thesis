@@ -1,0 +1,439 @@
+/* Zmieniona nazwa pliku na teacherDashboard.module.css */
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    #f8f9fa 0%,
+    #e8eef5 30%,
+    #dfe7f0 60%,
+    #d4dce8 100%
+  );
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  color: #2f2544;
+  padding-top: 80px;
+}
+
+.dashboardContainer {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: calc(100vh - 80px);
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.sidebar {
+  background: #ffffff;
+  border-right: 2px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.sidebarHeader {
+  padding: 24px 20px 20px;
+  border-bottom: 2px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.sidebarTitle {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #2b2450;
+  margin: 0;
+}
+
+.userBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  /* Zmieniony kolor na pasujący do nauczyciela */
+  background: linear-gradient(135deg, #28a745 0%, #007bff 100%);
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.25);
+}
+
+.userIcon {
+  font-size: 1.6rem;
+}
+
+/* NOWA SEKCJA DLA KLASY */
+.classInfoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  /* Nowe tło dla sekcji klasy */
+  background: linear-gradient(
+    135deg,
+    rgba(40, 167, 69, 0.05) 0%,
+    rgba(0, 123, 255, 0.05) 100%
+  );
+  border-radius: 12px;
+  border: 1px solid rgba(40, 167, 69, 0.1);
+}
+
+.classInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.classLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.className {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #2b2450;
+}
+
+.classPrompt {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.changeClassButton {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: background-color 0.3s ease;
+}
+
+.changeClassButton:hover {
+  background-color: #0056b3;
+}
+/* KONIEC NOWEJ SEKCJI DLA KLASY */
+
+.navigation {
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.navSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.navSectionTitle {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  margin: 0;
+  padding: 0 20px 6px;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #3b2f5c;
+  font-weight: 600;
+  font-size: 0.85rem;
+  position: relative;
+}
+
+.navItem::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.3s ease;
+}
+
+.navItem:hover {
+  background: #f3f4f6;
+}
+
+.navItemActive {
+  background: linear-gradient(
+    90deg,
+    rgba(91, 79, 196, 0.1) 0%,
+    rgba(91, 79, 196, 0.05) 100%
+  );
+  color: #5b4fc4;
+}
+
+.navItemActive::before {
+  background: linear-gradient(180deg, #5b4fc4 0%, #7c3aed 100%);
+}
+.navIcon {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+}
+
+.navText {
+  flex: 1;
+  line-height: 1.3;
+}
+
+.mainContent {
+  padding: 40px 48px;
+  background: transparent;
+  min-height: calc(100vh - 80px);
+}
+
+.contentSection {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 20px 60px rgba(43, 36, 80, 0.08);
+  animation: fadeIn 0.5s ease;
+}
+
+.classSelectorContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectClassButton {
+  margin-top: 20px;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #28a745 0%, #007bff 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.selectClassButton:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* Reszta stylów zachowana z oryginalnego pliku (poprawione tylko media queries i nazwy) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.contentTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2b2450;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.contentIcon {
+  font-size: 2.5rem;
+}
+
+.contentDescription {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .dashboardContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -280px;
+    top: 80px;
+    bottom: 0;
+    height: calc(100vh - 80px);
+    z-index: 100;
+    transition: left 0.3s ease;
+  }
+
+  .mainContent {
+    padding: 24px;
+  }
+
+  .contentSection {
+    padding: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .mainContent {
+    padding: 16px;
+  }
+
+  .contentSection {
+    padding: 24px;
+  }
+
+  .contentTitle {
+    font-size: 1.8rem;
+  }
+
+  .contentIcon {
+    font-size: 1.8rem;
+  }
+
+  .navItem {
+    font-size: 0.8rem;
+    padding: 8px 16px;
+  }
+
+  .navIcon {
+    font-size: 1.1rem;
+  }
+}
+
+/* ... (zachowaj wszystkie poprzednie style z poprzedniej odpowiedzi) ... */
+
+/* Dodane nowe style poniżej: */
+
+.loadingState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 1.2rem;
+  color: #6b7280;
+}
+
+.classList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.classItemButton {
+  padding: 15px 20px;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2b2450;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.classItemButton:hover {
+  background-color: #e5e7eb;
+  border-color: #007bff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.1);
+}
+
+.emptyClassList {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px dashed #ced4da;
+  border-radius: 12px;
+  text-align: center;
+  color: #6c757d;
+}
+
+/* Style dla formularza ClassCreator */
+.classCreatorForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.classCreatorInput {
+  padding: 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.classCreatorInput:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.classCreatorActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cancelButton {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancelButton:hover {
+  background-color: #5a6268;
+}
+
+.selectClassButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

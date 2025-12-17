@@ -1,0 +1,97 @@
+.page {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(43, 36, 80, 0.08);
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #2b2450;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #5b4fc4;
+  box-shadow: 0 0 0 2px rgba(91, 79, 196, 0.1);
+}
+
+.exerciseRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.addButton,
+.removeButton,
+.submitButton {
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.addButton {
+  background-color: #e0e7ff;
+  color: #5b4fc4;
+}
+
+.addButton:hover {
+  background-color: #c7d2fe;
+}
+
+.removeButton {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.removeButton:hover {
+  background-color: #fecaca;
+}
+
+.submitButton {
+  background: linear-gradient(135deg, #5b4fc4 0%, #7c3aed 100%);
+  color: #fff;
+  font-size: 1rem;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(91, 79, 196, 0.3);
+}
+
+.error {
+  background: #fee;
+  border: 2px solid #fcc;
+  color: #c33;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}

@@ -1,0 +1,145 @@
+.container {
+  background: #ffffff;
+  padding: 48px;
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(43, 36, 80, 0.08);
+  animation: fadeIn 0.5s ease;
+}
+
+/* Fade-in animacja */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Nagłówek */
+.titleHeader {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(90deg, #5b4fc4 0%, #7c3aed 100%);
+  padding: 18px 28px;
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0 8px 30px rgba(91, 79, 196, 0.3);
+  margin-bottom: 24px;
+}
+
+.titleIcon {
+  font-size: 2.7rem;
+}
+
+.titleText {
+  font-size: 2.3rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-bottom: 36px;
+}
+
+/* Lista logów */
+.logList {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.logItem {
+  display: flex;
+  align-items: center;
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  gap: 16px;
+}
+
+.iconBox {
+  font-size: 1.8rem;
+}
+
+.success {
+  color: #22c55e;
+}
+
+.fail {
+  color: #ef4444;
+}
+
+.logInfo {
+  flex: 1;
+}
+
+.logDate {
+  font-weight: 600;
+  color: #2b2450;
+}
+
+.logEmail {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* Status badge */
+.status {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusOk {
+  background: rgba(34, 197, 94, 0.15);
+  color: #15803d;
+}
+
+.statusFail {
+  background: rgba(239, 68, 68, 0.15);
+  color: #b91c1c;
+}
+
+/* Wczytywanie / brak danych */
+.loadingBox,
+.emptyBox {
+  padding: 20px;
+  background: #f3f4f6;
+  border-radius: 18px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* Responsywność */
+@media (max-width: 600px) {
+  .container {
+    padding: 24px;
+  }
+
+  .titleHeader {
+    padding: 14px 20px;
+  }
+
+  .titleText {
+    font-size: 1.8rem;
+  }
+
+  .titleIcon {
+    font-size: 2.2rem;
+  }
+
+  .logItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
