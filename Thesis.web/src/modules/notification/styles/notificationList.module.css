@@ -1,0 +1,150 @@
+.wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtitle {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #666;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loading {
+  text-align: center;
+  padding: 16px;
+  color: #555;
+}
+
+.error {
+  background: #ffe2e2;
+  border-left: 4px solid #ff5c5c;
+  padding: 12px;
+  border-radius: 6px;
+  color: #b10000;
+}
+
+.empty {
+  text-align: center;
+  padding: 24px 8px;
+  color: #666;
+}
+
+.emptyIcon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item {
+  background: #f8f9fb;
+  padding: 14px 16px;
+  border-radius: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.item:hover {
+  background: #eef1f6;
+}
+
+.unseen {
+  border-left: 4px solid #4a90e2;
+}
+
+.seen {
+  opacity: 0.7;
+}
+
+.icon {
+  font-size: 26px;
+  margin-top: 2px;
+}
+
+.body {
+  flex: 1;
+}
+
+.message {
+  font-size: 15px;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 4px;
+}
+
+.meta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: #777;
+}
+
+.meta .date {
+  color: #999;
+}
+
+.actions {
+  margin-left: auto;
+  align-self: center;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 18px;
+  color: #555;
+  transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.actionButton:hover:not(:disabled) {
+  color: #4a90e2;
+  transform: scale(1.1);
+}
+
+.actionButton:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.seen .actionButton {
+  color: #999;
+}
