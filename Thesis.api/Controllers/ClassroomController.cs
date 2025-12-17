@@ -133,8 +133,17 @@ namespace Thesis.api.Controllers
             var query = new ClassroomQuery.GetMineHomeWork(User.Id());
             var result = await mediatR.Send(query);     
             return Ok(mapper.Map<List<HomeworkDetails>>(result));   
-        }   
+        }
 
+        [HttpGet("homework-types")]
+        public async Task<ActionResult<List<HomeWorkTypePair>>> GetHomeworkTypesDictionary()
+        {
+            var query = new ClassroomQuery.GetHomeWorkTypesDict();
+            var result = await mediatR.Send(query);    
+
+            return Ok(mapper.Map<List<HomeWorkTypePair>>(result));
+        }
+            
 
 
     }

@@ -25,12 +25,12 @@ namespace Thesis.api.Controllers
 
         [HttpPost("register-teacher")]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult<AccountLoginModel>> Register([FromForm] TeacherAccountRegisterModel model)
+        public async Task<ActionResult> Register([FromForm] TeacherAccountRegisterModel model)
         {
             var command = new AccountCommand.RegisterTeacher(model);
-            var result = await mediatR.Send(command);   
+            await mediatR.Send(command);   
 
-            return Accepted(result);        
+            return Accepted();        
         }
 
         [HttpPost("register")]
@@ -42,6 +42,33 @@ namespace Thesis.api.Controllers
             return Accepted(result);
         }
 
+        [HttpGet("impersonate-as-student")]
+        [Authorize(Roles = "Parent")]
+        public async Task<ActionResult<AccountSuccesLoginModel>> ImpersonateAsStudent()
+        {
+            var command = new AccountCommand.ImpersonateAsStudent(User.Id());
+            var token = await mediatR.Send(command);
+
+            return Accepted(token); 
+        }
+
+        [HttpGet("verify")]
+        [Authorize]
+        public ActionResult VerifyToken()
+        {
+            return Ok();
+        }
+
+        [HttpGet("my-profile")]
+        [Authorize]
+
+        public async Task<ActionResult<ProfileDetails>> GetProfileDetails()
+        {
+            var query = new AccountQuery.GetProfileDetails(User.Id());
+            var result = await mediatR.Send(query); 
+
+            return Ok(result);
+        }
 
         [HttpPost("login")]
         public async Task<ActionResult<AccountSuccesLoginModel>> Login([FromBody] AccountLoginModel model)

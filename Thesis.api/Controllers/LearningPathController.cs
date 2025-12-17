@@ -38,21 +38,27 @@ namespace Thesis.api.Controllers
 
         //endpoint returns publicId and flag IsDone for current student that watch those exercises
         [HttpGet("{id}/exercise")]
-        public async Task<ActionResult<PathExercisesResource>> GetPathExercise(string id)          
+        public async Task<ActionResult<PathExercisesResource>> GetPathExercise(string id, [FromQuery] bool isReviewPath = false)          
         {
-            var query = new LearningPathQuery.GetExercises(id);   
-            var results = await mediatR.Send(query);
 
-            var mapped = mapper.Map<List<PathExercise>>(results);
+            if (!isReviewPath)
+            {
+                var query = new LearningPathQuery.GetExercises(id);
+                var results = await mediatR.Send(query);
 
+                var mapped = mapper.Map<List<PathExercise>>(results);
 
-            return Ok(new PathExercisesResource(mapped));    
+                return Ok(new PathExercisesResource(mapped));
+
+            }
+
+            var hardestQuery = new LearningPathQuery.GetHardestExercises(User.Id());
+            var hardetstResults = await mediatR.Send(hardestQuery);
+            var hardestMapped = mapper.Map<List<PathExercise>>(hardetstResults);
+
+            return Ok(new PathExercisesResource(hardestMapped));
+                
         }   
-
-
-
-
-
 
 
     }
