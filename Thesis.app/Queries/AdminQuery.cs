@@ -5,29 +5,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thesis.app.Extensions;
+using Thesis.app.Filters.AdminQueryFilters;
+using Thesis.app.Pagination;
 using Thesis.data;
 using Thesis.data.Data;
 using Thesis.data.Interfaces;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Thesis.app.Queries
 {
     public class AdminQuery
     {
-        public class Users : IRequest<List<User>> 
+        public class Users : IRequest<PaginationResult<User>>
         {
+            public UsersFilter Filter { get; set; } 
+            public PaginationEntry Pagination { get; set; }
+
+            public Users(UsersFilter filter, PaginationEntry pagination)
+            {
+                Filter = filter;
+                Pagination = pagination;
+            }
+        }
+            
         
+
+        public class Classes : IRequest<PaginationResult<Classroom>>
+        {
+            public ClassFilter Filter { get; set; }
+            public PaginationEntry Pagination { get; set; }
+
+            public Classes(ClassFilter filter, PaginationEntry pagination)
+            {
+                Filter = filter;
+                Pagination = pagination;    
+            }
         }
 
-        
-
-        public class Classes : IRequest<List<Classroom>>
+        public class Loggins : IRequest<PaginationResult<LoginHistory>>
         {
+            public LogginsFilter Filter { get; set; }
+            public PaginationEntry Pagination { get; set; }
 
-        }
-
-        public class Loggins : IRequest<List<LoginHistory>>
-        {
-
+            public Loggins(LogginsFilter filter, PaginationEntry pagination)
+            {
+                Filter = filter;
+                Pagination = pagination;
+            }
         }
 
         public class LogginsPerStudent : IRequest<List<LoginHistory>>
@@ -64,7 +89,7 @@ namespace Thesis.app.Queries
         }   
     }
 
-    public class GetUsersForAdmin : IRequestHandler<AdminQuery.Users, List<User>>, IHandler
+    public class GetUsersForAdmin : IRequestHandler<AdminQuery.Users, PaginationResult<User>>, IHandler
     {
         public AppDbContext DbContext { get; set; } 
 
@@ -72,15 +97,19 @@ namespace Thesis.app.Queries
         {
             DbContext = dbContext;
         }   
-        public async Task<List<User>> Handle(AdminQuery.Users request, CancellationToken cancellationToken)
+        public async Task<PaginationResult<User>> Handle(AdminQuery.Users request, CancellationToken cancellationToken)
         {
 
-            return await DbContext.Users.AsNoTracking().ToListAsync(cancellationToken);
+            var query = DbContext.Users
+                .AsNoTracking()
+                .Filter(request.Filter);
+
+            return await query.ToPagedResultAsync(request.Pagination);
 
         }
     }
 
-    public class GetClassesForAdmin : IRequestHandler<AdminQuery.Classes, List<Classroom>>, IHandler
+    public class GetClassesForAdmin : IRequestHandler<AdminQuery.Classes, PaginationResult<Classroom>>, IHandler
     {
         public AppDbContext DbContext { get; set; } 
 
@@ -88,15 +117,21 @@ namespace Thesis.app.Queries
         {
             DbContext = dbContext;
         }
-        public async Task<List<Classroom>> Handle(AdminQuery.Classes request, CancellationToken cancellationToken)
+        public async Task<PaginationResult<Classroom>> Handle(AdminQuery.Classes request, CancellationToken cancellationToken)
         {
 
-            return await DbContext.Classrooms.Include(p => p.Teacher).AsNoTracking().ToListAsync(cancellationToken);
+            var query = DbContext
+                .Classrooms
+                .Include(p => p.Teacher)
+                .AsNoTracking()
+                .Filter(request.Filter);
+
+            return await query.ToPagedResultAsync(request.Pagination);
 
         }
     }
 
-    public class GetLogginsForAdmin : IRequestHandler<AdminQuery.Loggins, List<LoginHistory>>, IHandler
+    public class GetLogginsForAdmin : IRequestHandler<AdminQuery.Loggins, PaginationResult<LoginHistory>>, IHandler
     {   
         public AppDbContext DbContext { get; set; }
 
@@ -104,11 +139,15 @@ namespace Thesis.app.Queries
         {
             DbContext = dbContext;
         }
-        public async Task<List<LoginHistory>> Handle(AdminQuery.Loggins request, CancellationToken cancellationToken)
+        public async Task<PaginationResult<LoginHistory>> Handle(AdminQuery.Loggins request, CancellationToken cancellationToken)
         {
+            var query = DbContext.LoginHistories
+                .Include(p => p.User)
+                .AsNoTracking()
+                .Filter(request.Filter)
+               .OrderByDescending(p => p.LoginDate);
 
-            return await DbContext.LoginHistories.Include(p => p.User).AsNoTracking().ToListAsync(cancellationToken);
-
+            return await query.ToPagedResultAsync(request.Pagination);
         }
     }
     public class GetLogginsPerStudent : IRequestHandler<AdminQuery.LogginsPerStudent, List<LoginHistory>>, IHandler
