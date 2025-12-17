@@ -4,6 +4,7 @@ using Thesis.api.Extensions;
 using Thesis.app.Dtos.Answer;
 using Thesis.app.Events;
 using Thesis.app.Exceptions;
+using Thesis.app.Services;
 using Thesis.data;
 using Thesis.data.Data;
 using Thesis.data.Interfaces;
@@ -32,10 +33,13 @@ namespace Thesis.app.Commands
         public AppDbContext DbContext { get; set; }
         public IMediator MediatR { get; set; }
 
-        public AnswerHandler(AppDbContext dbContext, IMediator mediatR)
+        public IAchievementService AchievementService { get; set; }
+
+        public AnswerHandler(AppDbContext dbContext, IMediator mediatR, IAchievementService achievementService)
         {
             DbContext = dbContext;
             this.MediatR = mediatR;
+            AchievementService = achievementService;
         }
 
         public async Task<Unit> Handle(ExerciseCommand.Answer request, CancellationToken cancellationToken)
@@ -84,6 +88,7 @@ namespace Thesis.app.Commands
                 student.CurrentPoints += addedPoints;
 
                 await MediatR.Publish(new PointsAddedEvent(student.Id, addedPoints, student.CurrentPoints), cancellationToken);
+                await AchievementService.CheckStudentFinishPath(student.Id,  exercise.LearningPathExercises.First().LearningPathId);
             }
             catch (WrongAnswerException)
             {

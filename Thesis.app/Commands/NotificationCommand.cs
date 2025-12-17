@@ -26,9 +26,23 @@ namespace Thesis.app.Commands
                 UserFrom = userFrom;
             }
         }
+
+        public class MarkAsSeen : IRequest<Unit>
+        {
+            public int UserId { get; set; }
+            public Guid NotificationId { get; set; }
+
+            public MarkAsSeen(Guid notificationId, int userId)
+            {
+                NotificationId = notificationId;
+                UserId = userId;
+            }   
+        }
+
     }
 
-    public class SendNotificationHandler : IRequestHandler<NotificationCommand.SendNotification, Unit>, IHandler
+    public class SendNotificationHandler : IRequestHandler<NotificationCommand.SendNotification, Unit>,
+                                          IRequestHandler<NotificationCommand.MarkAsSeen, Unit>, IHandler
     {
         public AppDbContext DbContext { get; set; }
 
@@ -60,6 +74,20 @@ namespace Thesis.app.Commands
 
 
             return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(NotificationCommand.MarkAsSeen request, CancellationToken cancellationToken)
+        {
+            var notification = await DbContext.Notifications
+                 .Include(p => p.UserTo)
+                 .FirstOrDefaultAsync(p => p.UserToId == request.UserId && p.PublicId == request.NotificationId);
+
+            notification.IsSeen = true;
+
+            await DbContext.SaveChangesAsync();
+
+            return Unit.Value;
+
         }
     }
 }

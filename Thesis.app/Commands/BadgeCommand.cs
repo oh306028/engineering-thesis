@@ -15,12 +15,10 @@ namespace Thesis.app.Commands
         public class MarkAsSeen : IRequest<Unit>
         {
             public int StudentId { get; set; }
-            public List<string> RewardIds { get; set; }
 
-            public MarkAsSeen(int studentId, List<string> rewardIds)    
+            public MarkAsSeen(int studentId)    
             {
                 StudentId = studentId;
-                RewardIds = rewardIds;
             }
         }
 
@@ -35,15 +33,10 @@ namespace Thesis.app.Commands
 
             public async Task<Unit> Handle(MarkAsSeen request, CancellationToken cancellationToken)
             {
-                var rewardGuids = request.RewardIds
-                    .Select(Guid.Parse)
-                    .ToList();
-
                 var achievements = await DbContext.AchievementStudents
                     .Include(p => p.Achievement)
                     .Where(p =>
-                        p.StudentId == request.StudentId &&
-                        rewardGuids.Contains(p.Achievement.PublicId))
+                        p.StudentId == request.StudentId)
                     .ToListAsync(cancellationToken);
 
                 foreach (var a in achievements)
@@ -52,8 +45,7 @@ namespace Thesis.app.Commands
                 var badges = await DbContext.StudentBadges
                     .Include(p => p.Badge)
                     .Where(p =>
-                        p.StudentId == request.StudentId &&
-                        rewardGuids.Contains(p.Badge.PublicId))
+                        p.StudentId == request.StudentId)
                     .ToListAsync(cancellationToken);
 
                 foreach (var b in badges)
