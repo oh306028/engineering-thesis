@@ -1,20 +1,29 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using Thesis.app;
-using Thesis.data;
-using AutoMapper;
-using Thesis.app.Dtos.Account;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using NLog.Web;
+using System.Reflection;
+using System.Text;
+using Thesis.app;
+using Thesis.app.Dtos.Account;
 using Thesis.app.Services;
+using Thesis.data;
 
 namespace Thesis.api
 {
+
+    //TO DO:
+    //SYSTEM OSIAGNIEC TRZEBA UZUPELNIC
+
+    //projekt testowy *
+
+    //dodanie redisa => kontener gotowy!
+
+    //nie wiem czy narazie system osiagniec caly zrobimy, moze narazie przydaloby sie uzupelnic chociaz metode do pierwszego zadania (dodac najwyzej nowa odznake) i sprawdzic jak to zadziala
+
     public class Program
     {
         public static async Task Main(string[] args)
@@ -36,6 +45,10 @@ namespace Thesis.api
                 cfg.RegisterServicesFromAssembly(typeof(AppAssemblyMarker).Assembly);
             });
 
+            builder.Logging.ClearProviders();
+            builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+            builder.Host.UseNLog();
+
             builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -45,10 +58,20 @@ namespace Thesis.api
 
             var azureOptionSection = builder.Configuration.GetRequiredSection("AzureStorage");
             builder.Services.Configure<AzureStorageOptions>(azureOptionSection);
-                    
+
+            builder.Services.AddScoped<IAchievementService, AchievementService>();
+            builder.Services.AddScoped<IAdaptiveSystemService, AdaptiveSystemService>();
+
             var azureOptions = new AzureStorageOptions();
             jwtOptionSection.Bind(azureOptions);
-            builder.Services.AddSingleton(azureOptions);    
+            builder.Services.AddSingleton(azureOptions);
+
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                });
 
             builder.Services.AddSingleton<IFileService, FileService>();
 
@@ -66,19 +89,19 @@ namespace Thesis.api
                 });
 
                 options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    {
-        {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-            {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
                 {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[]{}
-        }
-    });
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            {
+                                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
             });
 
 
@@ -140,7 +163,7 @@ namespace Thesis.api
                     c.RoutePrefix = string.Empty;
                 });
             }
-           
+
 
             app.UseCors("frontend");
 
