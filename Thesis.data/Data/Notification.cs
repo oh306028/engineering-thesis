@@ -27,8 +27,7 @@ namespace Thesis.data.Data
 
         public bool IsSeen { get; set; }
         public NotificationMessage Message { get; set; }
-        public int MessageId { get; set; }
-
+        public int MessageId { get; set; }  
         public int Type { get; set; }   
         public NotificationType TypeEnum => (NotificationType)Type;
 

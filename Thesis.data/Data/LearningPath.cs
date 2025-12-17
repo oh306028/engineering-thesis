@@ -24,5 +24,12 @@ namespace Thesis.data.Data
 
         public List<Badge> Badges { get; set; } //odznaki ktore mozna zdobyc za ukonczenie levela
 
+
+        //tworzenie sciezek przez nauczycieli
+        //dodanie subjectu? aby pozniej rodzic mogl filtrowac wlasnie po przedmiocie i poziomie trudnosci?
+        public bool? IsDraft { get; set; }   
+
+        //moze jednak trzeba tabele studentLearningPath dodac? aby zaznaczac ze student ukonczyl juz jakas learningPath?
+        //chyba ze sprawdzac to po studentExercises? mam taka logike w nagrodach za zakonczenie path, cos podobnego trzeba zrobic
     }
 }

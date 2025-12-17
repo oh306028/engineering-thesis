@@ -14,7 +14,11 @@ namespace Thesis.data.Enums
         [Description("Średni")]
         Medium,
         [Description("Trudny")]
-        Hard
+        Hard,
+        [Description("Bardzo trudny")]
+        VeryHard,
+        [Description("Arcy trudny")]
+        Hardest
 
     }
 }

@@ -24,7 +24,7 @@ namespace Thesis.data.Data
         public List<StudentExercises> StudentExercises { get; set; } = new List<StudentExercises>();
         public Answer Answer { get; set; }
 
-        public int Points => Level ?? 1 * 5; 
+        public int Points => Level * 5 ?? 1 * 5; 
         public int? SubjectId { get; set; }
         public Subject Subject { get; set; }
         public int? HomeWorkId { get; set; }

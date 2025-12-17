@@ -13,7 +13,8 @@ namespace Thesis.data.Enums
         Warning,
         TimeWarning,
         Achievement,
-        Info
+        Info,
+        Friendly
 
     }
 }
