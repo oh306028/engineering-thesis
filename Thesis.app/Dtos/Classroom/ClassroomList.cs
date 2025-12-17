@@ -9,6 +9,7 @@ namespace Thesis.app.Dtos.Classroom
     public class ClassroomList
     {
         public string PublicId { get; set; }
-        public string ClassName { get; set; }   
+        public string ClassName { get; set; }
+        public string ClassroomKey { get; set; }    
     }
 }   

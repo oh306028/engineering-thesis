@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thesis.app.Pagination;
 
 namespace Thesis.app.Dtos.Admin
 {
@@ -13,4 +14,6 @@ namespace Thesis.app.Dtos.Admin
         public string ClassroomKey { get; set; }
         public string TeacherName { get; set; } 
     }
+
+    public class PagedClassroomListModel : PaginationResult<ClassroomListModel> { }
 }

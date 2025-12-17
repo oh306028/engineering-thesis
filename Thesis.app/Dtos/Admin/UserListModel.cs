@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thesis.app.Pagination;
 
 namespace Thesis.app.Dtos.Admin
 {
@@ -13,4 +14,6 @@ namespace Thesis.app.Dtos.Admin
         public string Email { get; set; }
         public string Role { get; set; }    
     }
+
+    public class PagedUserListModel : PaginationResult<UserListModel> { }
 }

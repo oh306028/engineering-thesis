@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thesis.app.Pagination;
 
 namespace Thesis.app.Dtos.Notification
 {
@@ -21,4 +22,6 @@ namespace Thesis.app.Dtos.Notification
         public string Message { get; set; }
         public DateTime NotificationDate { get; set; }  
     }
+
+    public class PagedNotificationDetails : PaginationResult<NotificationDetails> { }
 }
