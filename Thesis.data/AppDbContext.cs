@@ -32,6 +32,9 @@ namespace Thesis.data
         public DbSet<LoginHistory> LoginHistories { get; set; }
         public DbSet<TimeBlocker> TimeBlockers { get; set; }
 
+        public DbSet<AccountLevel> AccountLevels { get; set; }
+        public DbSet<AchievementStudents> AchievementStudents { get; set; }    
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -98,6 +101,8 @@ namespace Thesis.data
                 e.Property(e => e.PublicId)
              .HasDefaultValueSql("NEWID()");
 
+                e.Property(p => p.Emote).HasMaxLength(10);
+
             });
 
             modelBuilder.Entity<Achievement>(e =>
@@ -120,6 +125,24 @@ namespace Thesis.data
                 e.HasOne(p => p.Badge)
                 .WithMany(p => p.StudentBadges)
                 .HasForeignKey(p => p.BadgeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                e.Property(p => p.IsSeen).HasDefaultValue(false);
+
+            });
+
+            modelBuilder.Entity<AchievementStudents>(e =>
+            {
+                e.HasKey(p => new { p.StudentId, p.AchievementId });
+
+                e.HasOne(p => p.Student)
+                .WithMany(p => p.AchievementStudents)
+                .HasForeignKey(p => p.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                e.HasOne(p => p.Achievement)
+                .WithMany(p => p.AchievementStudents)   
+                .HasForeignKey(p => p.AchievementId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             });
@@ -163,16 +186,23 @@ namespace Thesis.data
             modelBuilder.Entity<Notification>(e =>
             {
                 e.HasOne(p => p.Message)
-                .WithOne(p => p.Notification)
+                .WithMany(p => p.Notifications)
                 .OnDelete(DeleteBehavior.Cascade);
 
                 e.Ignore(p => p.TypeEnum);
                 e.Property(e => e.PublicId)
              .HasDefaultValueSql("NEWID()");
+                    
+            });
+
+            modelBuilder.Entity<NotificationMessage>(e =>
+            {
+                e.Property(e => e.PublicId)
+            .HasDefaultValueSql("NEWID()");
 
             });
 
-            modelBuilder.Entity<Subject>(e =>
+                modelBuilder.Entity<Subject>(e =>
             {
                 e.HasMany(p => p.Exercises)
                 .WithOne(p => p.Subject)
@@ -185,10 +215,12 @@ namespace Thesis.data
             });
 
             modelBuilder.Entity<Exercise>(e =>  
-            {
+            {              
                 e.HasOne(p => p.Answer)
                 .WithOne(p => p.Exercise)
                 .OnDelete(DeleteBehavior.Cascade);
+
+                e.Ignore(p => p.Points);
 
                 e.Ignore(p => p.LevelEnum);
                 e.Property(e => e.PublicId)
@@ -201,6 +233,18 @@ namespace Thesis.data
                 e.Property(p => p.CorrectText).HasMaxLength(150);
                 e.Property(e => e.PublicId)
              .HasDefaultValueSql("NEWID()");
+
+                e.Property(p => p.IncorrectOption1)
+                .HasMaxLength(150);
+
+                e.Property(p => p.IncorrectOption2)
+                .HasMaxLength(150);
+
+                e.Property(p => p.IncorrectOption3)
+                .HasMaxLength(150);
+
+                e.Property(p => p.CorrectOption)
+              .HasMaxLength(150);
 
             });
 
@@ -236,7 +280,7 @@ namespace Thesis.data
                 e.HasMany(p => p.Exercises)
                 .WithOne(p => p.HomeWork)
                 .HasForeignKey(p => p.HomeWorkId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
                 e.Property(e => e.PublicId)
               .HasDefaultValueSql("NEWID()");
