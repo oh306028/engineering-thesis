@@ -7,9 +7,11 @@
 	<ItemGroup>
 		<PackageReference Include="Azure.Storage.Blobs" Version="12.26.0" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+		<PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="6.1.9" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
 		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.*" />
 		<PackageReference Include="MediatR" Version="12.2.0" />
+		<PackageReference Include="NLog" Version="6.0.7" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Thesis.data\Thesis.data.csproj" />
