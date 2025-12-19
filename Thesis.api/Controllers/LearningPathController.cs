@@ -31,7 +31,7 @@ namespace Thesis.api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<LearningPathDetails>>> GetPaths([FromQuery]LearningPathType type)   
         {
-            var query = new LearningPathQuery.GetList(type);    
+            var query = new LearningPathQuery.GetList(type, User.Id());    
             var results = await mediatR.Send(query);
 
             return Ok(mapper.Map<List<LearningPathDetails>>(results));  
@@ -45,6 +45,17 @@ namespace Thesis.api.Controllers
             var results = await mediatR.Send(query);    
 
             return Ok(mapper.Map<List<LearningPathDetails>>(results));
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult> RemoveDraft(Guid id)
+        {
+            var command = new LearningPathCommand.DeleteDraft(id, User.Id());
+            await mediatR.Send(command);
+
+            return Accepted();
+
         }
 
         //endpoint returns publicId and flag IsDone for current student that watch those exercises
