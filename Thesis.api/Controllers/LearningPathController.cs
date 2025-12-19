@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Thesis.app.Commands;
 using Thesis.app.Dtos.Exercise;
 using Thesis.app.Dtos.LearningPath;
 using Thesis.app.Dtos.Resource;
@@ -36,11 +37,20 @@ namespace Thesis.api.Controllers
             return Ok(mapper.Map<List<LearningPathDetails>>(results));  
         }
 
+        [HttpGet("drafts")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<List<LearningPathDetails>>> GetDrafts()
+        {
+            var query = new LearningPathQuery.GetDraftsList(User.Id());
+            var results = await mediatR.Send(query);    
+
+            return Ok(mapper.Map<List<LearningPathDetails>>(results));
+        }
+
         //endpoint returns publicId and flag IsDone for current student that watch those exercises
         [HttpGet("{id}/exercise")]
         public async Task<ActionResult<PathExercisesResource>> GetPathExercise(string id, [FromQuery] bool isReviewPath = false)          
         {
-
             if (!isReviewPath)
             {
                 var query = new LearningPathQuery.GetExercises(id);
@@ -56,10 +66,38 @@ namespace Thesis.api.Controllers
             var hardetstResults = await mediatR.Send(hardestQuery);
             var hardestMapped = mapper.Map<List<PathExercise>>(hardetstResults);
 
-            return Ok(new PathExercisesResource(hardestMapped));
-                
-        }   
+            return Ok(new PathExercisesResource(hardestMapped));             
+        }
 
+        [HttpPost]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult> CreatePath([FromBody] LearningPathModel model)
+        {
+            var command = new LearningPathCommand.CreatePath(model, User.Id());
+            await mediatR.Send(command);
+
+            return Accepted();
+        }
+
+        [HttpPatch("{id}")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult> PublishPath(Guid id)
+        {
+            var command = new LearningPathCommand.Publish(id, User.Id());
+            await mediatR.Send(command);
+
+            return Accepted();
+        }
+
+        [HttpPost("{id}/exercise")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult> CreatePathExercise(Guid id, [FromBody] ExercisePathModel model)
+        {
+            var command = new LearningPathCommand.CreatePathExercise(id, model);
+            await mediatR.Send(command);
+
+            return Accepted();
+        }   
 
     }
 }
