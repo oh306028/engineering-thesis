@@ -20,10 +20,22 @@ namespace Thesis.app.Queries
         public class GetList : IRequest<List<LearningPath>>
         {
             public LearningPathType Type { get; set; }
-            public GetList(LearningPathType type)
+            public int UserId { get; set; }
+            public GetList(LearningPathType type, int userId)
             {
                 Type = type;
+                UserId = userId;
             }
+        }
+
+        public class GetDraftsList : IRequest<List<LearningPath>>
+        {
+            public int TeacherId { get; set; }
+            public GetDraftsList(int teacherId)
+            {
+                TeacherId = teacherId;
+            }
+
         }
 
         public class GetExercises : IRequest<List<Exercise>>
@@ -46,7 +58,9 @@ namespace Thesis.app.Queries
     }
 
 
-    public class GetLearningPathListHandler : IRequestHandler<LearningPathQuery.GetList, List<LearningPath>>, IHandler
+    public class GetLearningPathListHandler : IHandler,
+        IRequestHandler<LearningPathQuery.GetList, List<LearningPath>>,
+        IRequestHandler<LearningPathQuery.GetDraftsList, List<LearningPath>>
     {
         public AppDbContext DbContext { get; set; }
         public GetLearningPathListHandler(AppDbContext dbContext)
@@ -55,8 +69,30 @@ namespace Thesis.app.Queries
         }    
 
         public async Task<List<LearningPath>> Handle(LearningPathQuery.GetList request, CancellationToken cancellationToken)
-        { 
-            return await DbContext.LearningPaths.Include(p => p.Badges).AsNoTracking().Where(p => p.Type == (int)request.Type).ToListAsync(cancellationToken);
+        {
+            var student = await DbContext.Users.OfType<Student>()
+                .Include(p => p.StudentFilter)
+                .FirstOrDefaultAsync(p => p.Id == request.UserId);
+
+            var filters = student.StudentFilter;
+            var subject = await DbContext.Subjects.FirstOrDefaultAsync(p => p.Id == filters.SubjectId);
+
+            return await DbContext.LearningPaths
+                .Include(p => p.Badges)
+                .Include(p => p.Subject)
+                .AsNoTracking()
+                .Where(p => p.Type == (int)request.Type && (!p.IsDraft.HasValue || !p.IsDraft.Value) && p.Subject == subject && p.Level == filters.Level)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<List<LearningPath>> Handle(LearningPathQuery.GetDraftsList request, CancellationToken cancellationToken)
+        {
+            return await DbContext.LearningPaths
+               .Include(p => p.Badges)
+               .Include(p => p.Subject) 
+               .AsNoTracking()
+               .Where(p => p.CreatedBy == request.TeacherId && p.IsDraft.HasValue && p.IsDraft.Value)
+               .ToListAsync(cancellationToken);
         }
     }
 

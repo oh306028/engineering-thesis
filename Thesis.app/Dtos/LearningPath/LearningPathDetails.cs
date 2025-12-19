@@ -14,6 +14,10 @@ namespace Thesis.app.Dtos.LearningPath
         public int Level { get; set; }
         public string PublicId { get; set; }
 
+        public string Subject { get; set; }
+
+        public bool IsCurrentPathFinished { get; set; } 
+
         public List<BadgeDetails> Badges { get; set; }    
     }
 }

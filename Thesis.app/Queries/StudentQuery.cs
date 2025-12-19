@@ -47,7 +47,9 @@ namespace Thesis.app.Queries
         }
         public async Task<StudentProgressDetails> Handle(StudentQuery.GetProgress request, CancellationToken cancellationToken)
         {
-            var student = await DbContext.Users.OfType<Student>().Include(p => p.AccountLevel).FirstOrDefaultAsync(p => p.Id == request.StudentId, cancellationToken);
+            var student = await DbContext.Users.OfType<Student>()
+                .Include(p => p.AccountLevel)
+                .FirstOrDefaultAsync(p => p.Id == request.StudentId, cancellationToken);
 
             return new StudentProgressDetails()
             {
@@ -55,8 +57,9 @@ namespace Thesis.app.Queries
                 Level = student.AccountLevel.Level,
                 MaxLevelPoints = student.AccountLevel.MaxPoints,
                 MinLevelPoints = student.AccountLevel.MinPoints,
-                NewLevel = student.AccountLevel.Level == (request.CurrentLevel != 0 ? request.CurrentLevel : student.AccountLevel.Level) ? false : true
-
+                NewLevel = student.AccountLevel.Level == (request.CurrentLevel != 0 ? request.CurrentLevel : student.AccountLevel.Level) ? false : true,
+                
+                
             };
 
         }
@@ -73,7 +76,9 @@ namespace Thesis.app.Queries
         public async Task<Student> Handle(StudentQuery.GetStudentInfoForParent request, CancellationToken cancellationToken)
         {
             var student = await DbContext.Users.OfType<Student>()
+                .Include(p => p.StudentFilter).ThenInclude(p => p.Subject)
                 .Include(p => p.AccountLevel)
+                .Include(p => p.StudentBadges)
                 .Include(p => p.LoginHistory)
                 .Include(p => p.Parent)
                 .Include(p => p.Classroom).ThenInclude(p => p.Teacher)
