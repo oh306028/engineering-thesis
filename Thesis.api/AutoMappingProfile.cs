@@ -75,6 +75,8 @@ namespace Thesis.api
 
             CreateMap<LearningPath, LearningPathDetails>()
                 .ForMember(p => p.Type, o => o.MapFrom(p => p.EnumType.GetDescription()))
+                .ForMember(p => p.Subject, o => o.MapFrom(p => p.Subject.Name))
+                .ForMember(p => p.IsCurrentPathFinished, o => o.MapFrom<FinishedPathResolver>())
                 .ForMember(p => p.PublicId, o => o.MapFrom(p => p.PublicId.ToString()));
 
             CreateMap<Classroom, ClassroomDetails>()
@@ -105,9 +107,11 @@ namespace Thesis.api
             CreateMap<Student, StudentDetailsWithClassroom>()
                 .IncludeBase<Student, StudentDetails>()
                 .ForMember(p => p.TeacherPublicId, o => o.MapFrom(p => p.Classroom.Teacher.PublicId.ToString()))
+                .ForMember(p => p.FilterLevel, o => o.MapFrom(p => p.StudentFilter.Level))
+                .ForMember(p => p.FilterSubject, o => o.MapFrom(p => p.StudentFilter.Subject.PublicId))
                 .ForMember(p => p.TeacherName, o => o.MapFrom(p => p.Classroom.Teacher.FullName));
 
-            CreateMap<HomeWorkType, HomeWorkTypePair>()
+            CreateMap<HomeWorkType, HomeWorkTypePair>() 
                 .ForMember(p => p.Key, o => o.MapFrom(p => p.ToString()))
                 .ForMember(p => p.Value, o => o.MapFrom(p => p.GetDescription()));
 
