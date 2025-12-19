@@ -8,8 +8,10 @@ import MyClass from "../../student/views/myClass.tsx";
 import JoinRequestsView from "./joinRequests.tsx";
 import NotificationList from "../../notification/views/notificationList.tsx";
 import HomeWorkTeacher from "./homeworkTeacher.tsx";
+import ContentCreator from "./contentCreator.tsx";
 
 type MenuItem =
+  | "content-creator"
   | "my-classes"
   | "join-requests"
   | "my-students"
@@ -176,7 +178,7 @@ function TeacherDashboard() {
       setIsCreatingClass(false);
     } catch (error) {
       console.error("Błąd podczas tworzenia klasy:", error);
-      throw error; // Propagacja błędu do ClassCreator
+      throw error;
     }
   };
 
@@ -199,6 +201,8 @@ function TeacherDashboard() {
         </div>
       );
     }
+
+    if (activeMenu === "content-creator") return <ContentCreator />;
 
     if (isCreatingClass) {
       return (
@@ -295,12 +299,26 @@ function TeacherDashboard() {
                       activeMenu === "my-classes" ? styles.navItemActive : ""
                     }`}
                     onClick={() => {
-                      clearActiveClass();
                       setActiveMenu("my-classes");
                     }}
                   >
                     <span className={styles.navIcon}>🏫</span>
                     <span className={styles.navText}>Moje Klasy</span>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className={`${styles.navItem} ${
+                      activeMenu === "content-creator"
+                        ? styles.navItemActive
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setActiveMenu("content-creator");
+                    }}
+                  >
+                    <span className={styles.navIcon}>🛠️</span>
+                    <span className={styles.navText}>Panel kreatora</span>
                   </button>
                 </li>
               </ul>

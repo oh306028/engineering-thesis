@@ -203,8 +203,8 @@ function StudentDashboard() {
                     }`}
                     onClick={() => setActiveMenu("challenge")}
                   >
-                    <span className={styles.navIcon}>🎯</span>
-                    <span className={styles.navText}>Wyzwanie</span>
+                    <span className={styles.navIcon}>🎮</span>
+                    <span className={styles.navText}>Zabawa</span>
                   </button>
                 </li>
                 <li>

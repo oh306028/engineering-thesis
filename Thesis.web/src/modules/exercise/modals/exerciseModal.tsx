@@ -8,6 +8,7 @@ interface ExerciseModalProps {
   exercise: ExerciseDetails | null;
   isOpen: boolean;
   isDone: boolean;
+  isTeacherView: boolean;
   onClose: () => void;
 }
 
@@ -16,6 +17,7 @@ function ExerciseModal({
   isOpen,
   onClose,
   isDone,
+  isTeacherView,
 }: ExerciseModalProps) {
   const [userAnswer, setUserAnswer] = useState<string>("");
   const [userNumericAnswer, setUserNumericAnswer] = useState<string>("");
@@ -32,7 +34,6 @@ function ExerciseModal({
     }
   }, [isOpen]);
 
-  // Tasowanie opcji raz dla każdego zadania
   useEffect(() => {
     if (!exercise || !exercise.answer) return;
 
@@ -51,7 +52,6 @@ function ExerciseModal({
       setShuffledOptions([]);
     }
 
-    // reset pól przy nowym zadaniu
     setSelectedOption("");
     setUserAnswer("");
     setUserNumericAnswer("");
@@ -107,7 +107,7 @@ function ExerciseModal({
           </p>
         </div>
       );
-    } else if (isDone) {
+    } else if (isDone && !isTeacherView) {
       return (
         <div className={styles.answerSection}>
           <p className={styles.successText}>
@@ -115,11 +115,12 @@ function ExerciseModal({
           </p>
         </div>
       );
+    } else if (isTeacherView) {
+      return <></>;
     }
 
     const { answer } = exercise;
 
-    // Tekst
     if (answer.correctText && answer.correctText.trim() !== "") {
       return (
         <div className={styles.answerSection}>
@@ -138,7 +139,6 @@ function ExerciseModal({
       );
     }
 
-    // Liczba
     if (answer.correctNumber !== undefined && answer.correctNumber !== null) {
       return (
         <div className={styles.answerSection}>
@@ -157,7 +157,6 @@ function ExerciseModal({
       );
     }
 
-    // Opcje
     if (shuffledOptions.length > 0) {
       return (
         <div className={styles.answerSection}>

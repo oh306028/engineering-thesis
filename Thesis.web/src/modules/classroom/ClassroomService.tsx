@@ -111,6 +111,8 @@ export interface StudentDetails {
 export interface StudentDetailsWithClassroom extends StudentDetails {
   teacherPublicId: string;
   teacherName: string;
+  filterSubject?: string;
+  filterLevel?: number;
 }
 
 export interface HomeworkDetails {

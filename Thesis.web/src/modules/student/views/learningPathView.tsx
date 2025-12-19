@@ -54,7 +54,10 @@ function LearningPathView({
       try {
         setIsLoading(true);
         const data = await StudentService.GetPaths(pathType);
-        setPaths(data);
+        const selectedPaths = data.filter(
+          (p) => p.isCurrentPathFinished === false
+        );
+        setPaths(selectedPaths);
       } catch (error) {
         console.error("Błąd pobierania ścieżek:", error);
       } finally {
@@ -192,6 +195,7 @@ function LearningPathView({
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           isDone={isDone}
+          isTeacherView={false}
         />
       </div>
     );
@@ -229,7 +233,7 @@ function LearningPathView({
                 </div>
               </div>
               <h3 className={styles.pathCardTitle}>{path.name}</h3>
-              <p className={styles.pathCardType}>{path.type}</p>
+              <p className={styles.pathCardType}>{path.subject}</p>
               <button className={styles.pathCardButton}>
                 Rozpocznij
                 <span className={styles.arrowIcon}>→</span>
@@ -244,6 +248,7 @@ function LearningPathView({
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         isDone={isDone}
+        isTeacherView={false}
       />
     </div>
   );
