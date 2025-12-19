@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Thesis.app.Commands;
 using Thesis.app.Dtos.Student;
 using Thesis.app.Extensions;
 using Thesis.app.Queries;
@@ -23,8 +24,6 @@ namespace Thesis.api.Controllers
 
         }
 
-        //na froncie przetrzymywany jest currentLevel, bedziemy wysylac go do endpointu po wykonaniu zadania i sprawdzac czy ulegl zmianie by wyswietlil odpowiedni komunikat
-
         [HttpGet("progress")]
         [Authorize(Roles = "Student")]
         public async Task<ActionResult<StudentProgressDetails>> GetStudentProgress([FromQuery] int level)
@@ -43,6 +42,16 @@ namespace Thesis.api.Controllers
             var result = await mediatR.Send(query);
 
             return Ok(mapper.Map<StudentDetailsWithClassroom>(result));
+        }
+
+        [HttpPut("learning")]
+        [Authorize(Roles = "Parent")]
+        public async Task<ActionResult> SetStudentLearningFilters([FromBody] StudentFilterModel model)
+        {
+            var command = new StudentCommand.SetFilters(model, User.Id());
+            await mediatR.Send(command);
+
+            return Accepted();
         }
             
     }
