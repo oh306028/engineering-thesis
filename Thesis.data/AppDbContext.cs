@@ -215,6 +215,10 @@ namespace Thesis.data
                 .HasForeignKey(p => p.SubjectId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+                e.HasOne(p => p.StudentFilter)
+                .WithOne(p => p.Subject)
+                .OnDelete(DeleteBehavior.Restrict);
+
                 e.Property(p => p.Name).HasMaxLength(100);
                 e.Property(e => e.PublicId)
              .HasDefaultValueSql("NEWID()");

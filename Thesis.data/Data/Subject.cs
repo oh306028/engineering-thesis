@@ -14,6 +14,7 @@ namespace Thesis.data.Data
         public Guid PublicId { get; set; }  
         public string Name { get; set; }
 
+        public StudentFilter StudentFilter { get; set; }     
         public List<Exercise> Exercises { get; set; } = new List<Exercise>();
         public List<LearningPath> LearningPaths { get; set; } = new();
     }

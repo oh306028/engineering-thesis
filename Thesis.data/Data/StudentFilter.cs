@@ -12,7 +12,8 @@ namespace Thesis.data.Data
         public int Id { get; set; }
 
         public DateTime DateSet { get; set; }
-        public string Subject { get; set; }
+        public int SubjectId { get; set; }
+        public Subject Subject { get; set; }        
         public int Level { get; set; }
         public Student Student { get; set; }
 

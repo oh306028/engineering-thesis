@@ -29,7 +29,7 @@ namespace Thesis.data.Data
         public List<AchievementStudents> AchievementStudents { get; set; } = new();
 
         public StudentFilter StudentFilter { get; set; }
-        public int StudentFilterId { get; set; }    
+        public int? StudentFilterId { get; set; }    
 
         public int CountNewBadges()
         {
