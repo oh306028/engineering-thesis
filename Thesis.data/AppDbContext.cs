@@ -32,6 +32,8 @@ namespace Thesis.data
         public DbSet<LoginHistory> LoginHistories { get; set; }
         public DbSet<TimeBlocker> TimeBlockers { get; set; }
 
+        public DbSet<StudentFilter> StudentFilters{ get; set; }     
+
         public DbSet<AccountLevel> AccountLevels { get; set; }
         public DbSet<AchievementStudents> AchievementStudents { get; set; }    
 
@@ -90,6 +92,10 @@ namespace Thesis.data
                 .OnDelete(DeleteBehavior.Restrict);
 
                 e.HasOne(p => p.TimeBlocker)
+                .WithOne(p => p.Student)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                e.HasOne(p => p.StudentFilter)
                 .WithOne(p => p.Student)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -261,6 +267,16 @@ namespace Thesis.data
 
                 e.Property(p => p.Name)
                 .HasMaxLength(100);
+
+                e.HasOne(p => p.Subject)
+                .WithMany(p => p.LearningPaths)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasForeignKey(p => p.SubjectId);
+
+                e.HasOne(p => p.Teacher)
+                .WithMany(p => p.LearningPaths)
+                .HasForeignKey(p => p.CreatedBy)
+                .OnDelete(DeleteBehavior.SetNull);
 
             });
 

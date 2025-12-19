@@ -15,6 +15,6 @@ namespace Thesis.data.Data
         public string Name { get; set; }
 
         public List<Exercise> Exercises { get; set; } = new List<Exercise>();
-
+        public List<LearningPath> LearningPaths { get; set; } = new();
     }
 }
