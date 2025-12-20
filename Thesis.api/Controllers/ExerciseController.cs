@@ -62,6 +62,15 @@ namespace Thesis.api.Controllers
             return Ok();
         }
 
+        [HttpPost("{id}/game/{sessionId}/answer")]
+        public async Task<ActionResult> GameAnswer(string id, Guid sessionId, [FromBody] AnswerModel model)
+        {
+            var command = new ExerciseCommand.GameAnswer(id, sessionId, model);
+            await mediatR.Send(command);    
+
+            return Ok();    
+        }
+
         [HttpGet("{id}/answer")]    
         public async Task<ActionResult> GetAnswer(string id) 
         {

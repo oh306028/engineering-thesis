@@ -66,6 +66,9 @@ namespace Thesis.api
             jwtOptionSection.Bind(azureOptions);
             builder.Services.AddSingleton(azureOptions);
 
+            var pathHelper = new ReviewPathHelper();
+            builder.Services.AddSingleton(pathHelper);
+
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {

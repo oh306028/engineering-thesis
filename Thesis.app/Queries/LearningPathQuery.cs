@@ -74,6 +74,17 @@ namespace Thesis.app.Queries
                 .Include(p => p.StudentFilter)
                 .FirstOrDefaultAsync(p => p.Id == request.UserId);
 
+            if(request.Type == LearningPathType.Review)
+            {
+                return await DbContext.LearningPaths
+                 .Include(p => p.Badges)
+                 .Include(p => p.Subject)
+                 .AsNoTracking()
+                 .Where(p => p.Type == (int)request.Type && (!p.IsDraft.HasValue || !p.IsDraft.Value))
+                 .ToListAsync(cancellationToken);
+
+            }
+
             var filters = student.StudentFilter;
             var subject = await DbContext.Subjects.FirstOrDefaultAsync(p => p.Id == filters.SubjectId);
 

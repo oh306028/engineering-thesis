@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Thesis.app.Commands;
 using Thesis.app.Dtos.Exercise;
 using Thesis.app.Dtos.LearningPath;
@@ -20,11 +21,13 @@ namespace Thesis.api.Controllers
     {
         private readonly IMediator mediatR;
         private readonly IMapper mapper;
+        private readonly ReviewPathHelper pathHelper;
 
-        public LearningPathController(IMediator mediatR, IMapper mapper)
+        public LearningPathController(IMediator mediatR, IMapper mapper, ReviewPathHelper pathHelper)
         {
             this.mediatR = mediatR;
             this.mapper = mapper;
+            this.pathHelper = pathHelper;
         }
 
 
@@ -64,6 +67,7 @@ namespace Thesis.api.Controllers
         {
             if (!isReviewPath)
             {
+                pathHelper.IsReviewPath = false;
                 var query = new LearningPathQuery.GetExercises(id);
                 var results = await mediatR.Send(query);
 
@@ -72,7 +76,7 @@ namespace Thesis.api.Controllers
                 return Ok(new PathExercisesResource(mapped));
 
             }
-
+            pathHelper.IsReviewPath = true;
             var hardestQuery = new LearningPathQuery.GetHardestExercises(User.Id());
             var hardetstResults = await mediatR.Send(hardestQuery);
             var hardestMapped = mapper.Map<List<PathExercise>>(hardetstResults);

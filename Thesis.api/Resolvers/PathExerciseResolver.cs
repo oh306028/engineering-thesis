@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Thesis.api;
 using Thesis.app.Dtos.LearningPath;
 using Thesis.data;
 using Thesis.data.Data;
@@ -16,11 +17,13 @@ namespace Thesis.app.Resolvers
     {
         private readonly AppDbContext dbContext;
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly ReviewPathHelper pathHelper;
 
-        public PathExerciseResolver(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public PathExerciseResolver(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReviewPathHelper pathHelper)
         {
             this.dbContext = dbContext;
             this.httpContextAccessor = httpContextAccessor;
+            this.pathHelper = pathHelper;
         }
 
         public bool Resolve(Exercise source, PathExercise destination, bool destMember, ResolutionContext context)
@@ -29,6 +32,9 @@ namespace Thesis.app.Resolvers
 
             if (userIdClaim == null)
                 throw new InvalidOperationException("Nastąpił błąd po stronie serwera");
+
+            if (pathHelper.IsReviewPath)
+                return false;
 
             var studentId = int.Parse(userIdClaim.Value);
 

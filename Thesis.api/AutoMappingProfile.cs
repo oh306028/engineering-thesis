@@ -7,6 +7,7 @@ using Thesis.app.Dtos.Answer;
 using Thesis.app.Dtos.Badge;
 using Thesis.app.Dtos.Classroom;
 using Thesis.app.Dtos.Exercise;
+using Thesis.app.Dtos.Game;
 using Thesis.app.Dtos.HomeWork;
 using Thesis.app.Dtos.LearningPath;
 using Thesis.app.Dtos.Notification;
@@ -24,12 +25,13 @@ namespace Thesis.api
         public AutoMappingProfile()
         {
             CreateMap<Exercise, ExerciseDetails>()
-             .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.LevelEnum.GetDescription()))
+             .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.Level.HasValue ? src.LevelEnum.GetDescription() : null))
              .ForMember(dest => dest.Subject, opt => opt.MapFrom(src => src.Subject.Name))
              .ForMember(dest => dest.LearningPath, opt => opt.MapFrom(src =>
+                src.LearningPathExercises.Any() ? 
                  src.LearningPathExercises
                     .Select(lp => lp.LearningPath.EnumType.GetDescription())
-                    .First()
+                    .First() : null
              ));
 
             CreateMap<Achievement, AchievementDetails>();
@@ -62,6 +64,10 @@ namespace Thesis.api
 
             CreateMap<LoginHistory, LogginHistoryListModel>()
                 .ForMember(p => p.Login, o => o.MapFrom(p => p.User.Login));
+
+            CreateMap<Game, GameDetails>()
+                .ForMember(p => p.QuestionsCount, o => o.MapFrom(p => p.QuestionsCount.Value))
+                .ForMember(p => p.CorrectAnswers, o => o.MapFrom(p => p.CorrectAnswers.Value));
 
             CreateMap<PaginationResult<LoginHistory>, PagedLogginHistoryListModel>();
             CreateMap<PaginationResult<User>, PagedUserListModel>();

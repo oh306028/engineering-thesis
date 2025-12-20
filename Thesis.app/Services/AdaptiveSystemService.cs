@@ -22,31 +22,43 @@ namespace Thesis.app.Services
             var notFinishedExercises = await DbContext.StudentExercises
                 .Include(p => p.Student)
                 .Include(p => p.Exercise)
-                .Where(p => !p.IsCompleted && p.StudentId == studentId)
+                .Where(p => p.StudentId == studentId)
                 .ToListAsync();
 
+            var now = DateTime.UtcNow;
+
             var hardestExerciseIds = notFinishedExercises
-             .Select(p => new
-             {
-                 p.ExerciseId,  
-                 Score =
-                     (p.Exercise.Level ?? 1) * 2 +
-                     p.Exercise.Points * 1 +
-                     p.WrongAnswers * 3 +
-                     p.Attempts * 2 +
-                     (p.LastAttempt.HasValue ? 1 : 0)
-             })
-             .OrderByDescending(x => x.Score)
-             .Take(5)
-             .Select(p => p.ExerciseId)
-             .ToList();
+                .Select(p =>
+                {
+                    var baseScore = (p.Exercise.Level ?? 1) * 2 +
+                                       p.Exercise.Points * 1 +
+                                       p.WrongAnswers * 3 +
+                                       p.Attempts * 2;
+
+                    double timePenalty = 0;
+                    if (p.LastAttempt.HasValue)
+                    {
+                        var minutesSinceLastAttempt = (now - p.LastAttempt.Value).TotalMinutes;
+
+                        timePenalty = 1000 / (minutesSinceLastAttempt + 1);
+                    }
+
+                    return new
+                    {
+                        p.ExerciseId,
+                        FinalScore = baseScore - timePenalty
+                    };
+                })
+                .OrderByDescending(x => x.FinalScore)
+                .Take(5)
+                .Select(p => p.ExerciseId)
+                .ToList();
 
             var exercises = await DbContext.Exercises
                 .Where(p => hardestExerciseIds.Contains(p.Id))
                 .ToListAsync();
 
             return exercises;
-
         }
     }
 }

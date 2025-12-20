@@ -24,6 +24,9 @@ namespace Thesis.api.Resolvers
             if (userIdClaim == null)
                 throw new InvalidOperationException("Nastąpił błąd po stronie serwera");
 
+            if (source.EnumType == data.Enums.LearningPathType.Review)
+                return false;
+
             var studentId = int.Parse(userIdClaim.Value);
 
             var learningPathExercises = dbContext.LearningPathExercises
