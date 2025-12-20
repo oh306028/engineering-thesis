@@ -9,6 +9,14 @@ export default class ExerciseService {
   public static async Answer(id: string, answer: AnswerModel): Promise<void> {
     await axios.post(`/exercise/${id}/answer`, answer);
   }
+
+  public static async GameAnswer(
+    id: string,
+    sessionId: string,
+    answer: AnswerModel
+  ): Promise<void> {
+    await axios.post(`/exercise/${id}/game/${sessionId}/answer`, answer);
+  }
 }
 
 export interface AnswerDetails {

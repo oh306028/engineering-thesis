@@ -139,7 +139,11 @@ function ExerciseModal({
       );
     }
 
-    if (answer.correctNumber !== undefined && answer.correctNumber !== null) {
+    if (
+      answer.correctNumber !== undefined &&
+      answer.correctNumber !== null &&
+      answer.correctNumber !== 0
+    ) {
       return (
         <div className={styles.answerSection}>
           <label className={styles.label}>Twoja odpowiedź:</label>

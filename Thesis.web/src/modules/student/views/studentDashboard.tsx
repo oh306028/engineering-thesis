@@ -8,13 +8,13 @@ import MyClass from "./myClass.tsx";
 import Homework from "./homework.tsx";
 import styles from "../styles/studentDashboard.module.css";
 import NavBar from "../../../components/NavBar.tsx";
-import Challenge from "./challenge.tsx";
 import Review from "./review.tsx";
 import StudentService, {
   type StudentProgressDetails,
 } from "../studentService.tsx";
 import Contact from "./Contact.tsx";
 import RewardService from "../../classroom/RewardService.tsx";
+import SandboxGame from "./sandboxGame.tsx";
 
 type MenuItem =
   | "challenge"
@@ -80,7 +80,7 @@ function StudentDashboard() {
       case "learning":
         return <Learning onClose={fetchProgressAndRewards} />;
       case "challenge":
-        return <Challenge onClose={fetchProgressAndRewards} />;
+        return <SandboxGame/>;
       case "review":
         return <Review onClose={fetchProgressAndRewards} />;
       case "my-class":
