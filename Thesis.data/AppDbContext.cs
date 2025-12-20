@@ -32,6 +32,8 @@ namespace Thesis.data
         public DbSet<LoginHistory> LoginHistories { get; set; }
         public DbSet<TimeBlocker> TimeBlockers { get; set; }
 
+        public DbSet<Game> Games { get; set; }  
+
         public DbSet<StudentFilter> StudentFilters{ get; set; }     
 
         public DbSet<AccountLevel> AccountLevels { get; set; }
@@ -134,6 +136,20 @@ namespace Thesis.data
                 .OnDelete(DeleteBehavior.Cascade);
 
                 e.Property(p => p.IsSeen).HasDefaultValue(false);
+
+            });
+
+            modelBuilder.Entity<Game>(e =>
+            {
+                e.HasOne(p => p.Student)
+                .WithMany(p => p.Games)
+                .HasForeignKey(p => p.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                e.Ignore(p => p.WrongAnswers);
+
+                e.Property(e => e.PublicId)
+           .HasDefaultValueSql("NEWID()");
 
             });
 

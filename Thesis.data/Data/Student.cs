@@ -28,6 +28,8 @@ namespace Thesis.data.Data
         public int AccountLevelId { get; set; } 
         public List<AchievementStudents> AchievementStudents { get; set; } = new();
 
+        public List<Game> Games { get; set; } = new();
+
         public StudentFilter StudentFilter { get; set; }
         public int? StudentFilterId { get; set; }    
 

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Thesis.api;
 using Thesis.api.Extensions;
 using Thesis.app.Dtos.Answer;
 using Thesis.app.Events;
@@ -25,21 +26,38 @@ namespace Thesis.app.Commands
                 ExercisePublicId = publicId;
             }
         }
+
+        public class GameAnswer : IRequest<Unit>
+        {
+            public AnswerModel Model { get; set; }
+            public string ExercisePublicId { get; set; }
+            public Guid SessionId { get; set; }
+            public GameAnswer(string publicId, Guid sessionId, AnswerModel model)
+            {
+                Model = model;
+                ExercisePublicId = publicId;
+                SessionId = sessionId;
+            }
+        }
     }
 
 
-    public class AnswerHandler : IRequestHandler<ExerciseCommand.Answer, Unit>, IHandler
+    public class AnswerHandler : IHandler,
+                                IRequestHandler<ExerciseCommand.Answer, Unit>, 
+                                IRequestHandler<ExerciseCommand.GameAnswer, Unit>
     {
         public AppDbContext DbContext { get; set; }
         public IMediator MediatR { get; set; }
 
         public IAchievementService AchievementService { get; set; }
+        public ReviewPathHelper PathHelper { get; }
 
-        public AnswerHandler(AppDbContext dbContext, IMediator mediatR, IAchievementService achievementService)
+        public AnswerHandler(AppDbContext dbContext, IMediator mediatR, IAchievementService achievementService, ReviewPathHelper pathHelper)
         {
             DbContext = dbContext;
             this.MediatR = mediatR;
             AchievementService = achievementService;
+            PathHelper = pathHelper;
         }
 
         public async Task<Unit> Handle(ExerciseCommand.Answer request, CancellationToken cancellationToken)
@@ -54,6 +72,38 @@ namespace Thesis.app.Commands
 
             var studentExercise = await DbContext.StudentExercises
                  .FirstOrDefaultAsync(se => se.StudentId == request.StudentId && se.ExerciseId == exercise.Id);
+
+            if (PathHelper.IsReviewPath)
+            {
+                studentExercise.Attempts++;
+                studentExercise.LastAttempt = DateTime.UtcNow;
+                studentExercise.WrongAnswers--;
+
+                try
+                {
+                    if (!string.IsNullOrEmpty(request.Model.CorrectOption) &&
+                    request.Model.CorrectOption.ToLower() != answer.CorrectOption?.ToLower()
+                    || (request.Model.CorrectNumber.HasValue && request.Model.CorrectNumber != answer?.CorrectNumber)
+                    || (!string.IsNullOrEmpty(request.Model.CorrectText) && request.Model.CorrectText != answer.CorrectText))
+                    {
+                        studentExercise.WrongAnswers++;
+                        throw new WrongAnswerException("Błędna odpowiedź");
+                    }
+
+                }
+                catch (WrongAnswerException)
+                {
+                    throw;
+                }
+                finally
+                {
+                    await DbContext.SaveChangesAsync(cancellationToken);
+
+                }
+
+                return Unit.Value;
+
+            } 
 
             if (studentExercise == null)
             {
@@ -102,6 +152,39 @@ namespace Thesis.app.Commands
 
             return Unit.Value;
 
+        }
+
+        public async Task<Unit> Handle(ExerciseCommand.GameAnswer request, CancellationToken cancellationToken)
+        {
+            var game = await DbContext.Games.FirstOrDefaultAsync(p => p.PublicId == request.SessionId);
+
+            var exercise = await DbContext.Exercises
+                .WithAllIncludes()
+                .SingleAsync(p => p.PublicId.ToString() == request.ExercisePublicId);
+
+            var answer = exercise.Answer;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(request.Model.CorrectOption) &&
+                request.Model.CorrectOption.ToLower() != answer.CorrectOption?.ToLower()
+                || (request.Model.CorrectNumber.HasValue && request.Model.CorrectNumber != answer?.CorrectNumber)
+                || (!string.IsNullOrEmpty(request.Model.CorrectText) && request.Model.CorrectText != answer.CorrectText))            
+                    throw new WrongAnswerException("Błędna odpowiedź");
+
+                game.CorrectAnswers++;
+
+            }
+            catch (WrongAnswerException)
+            {            
+                throw;
+            }
+            finally
+            {
+               await DbContext.SaveChangesAsync();
+            }
+
+            return Unit.Value;
         }
     }
 
