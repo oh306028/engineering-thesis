@@ -9,11 +9,11 @@ import type { ExerciseDetails } from "../../exercise/ExerciseService";
 import ExerciseService from "../../exercise/ExerciseService";
 
 const levelEmojis: { [key: number]: string } = {
-  1: "🌱",
-  2: "🌿",
-  3: "🌳",
-  4: "🏔️",
-  5: "⭐",
+  0: "🌱",
+  1: "🌿",
+  2: "🌳",
+  3: "🏔️",
+  4: "⭐",
 };
 
 export interface LearningViewProps {
