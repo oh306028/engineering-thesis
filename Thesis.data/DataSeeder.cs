@@ -39,10 +39,6 @@ namespace Thesis.data
                 await dbContext.SaveChangesAsync();
             }
 
-            await SeedMathsExercises(dbContext);
-            await SeedPolishExercises(dbContext);
-
-
             if (!dbContext.LearningPaths.Any())
             {
                 var maths = dbContext.Subjects.First(p => p.Name == "Matematyka");
@@ -86,6 +82,9 @@ namespace Thesis.data
                 dbContext.LearningPaths.AddRange(young, experienced, hard, review);
                 await dbContext.SaveChangesAsync();
             }
+
+            await SeedMathsExercises(dbContext);
+            await SeedPolishExercises(dbContext);
 
 
             if (!dbContext.Badges.Any())
@@ -205,10 +204,10 @@ namespace Thesis.data
                 var sixthLevel = new AccountLevel() { Level = 6, MinPoints = 1000, MaxPoints = 1999 };
                 var seventhLevel = new AccountLevel() { Level = 7, MinPoints = 2000, MaxPoints = 4999 };
 
-                dbContext.AccountLevels.AddRange(firstLevel, secondLevel, thirdLevel, fourthLevel, fifthLevel, sixthLevel, secondLevel);
+                dbContext.AccountLevels.AddRange(firstLevel, secondLevel, thirdLevel, fourthLevel, fifthLevel, sixthLevel, seventhLevel);
                 await dbContext.SaveChangesAsync();
             }
-
+                
 
 
 
