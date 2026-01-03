@@ -107,6 +107,11 @@ namespace Thesis.api
                 });
             });
 
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "localhost:6379";
+                options.InstanceName = "ThesisApp_";
+            });
 
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
