@@ -45,11 +45,15 @@ namespace Thesis.data
 
             if (!dbContext.LearningPaths.Any())
             {
+                var maths = dbContext.Subjects.First(p => p.Name == "Matematyka");
+                var polish = dbContext.Subjects.First(p => p.Name == "Język Polski");
+
                 var young = new LearningPath()
                 {
                     Type = 1,
                     Level = 1,
-                    Name = "Młody Podróżnik"
+                    Name = "Młody Podróżnik",
+                    Subject = maths
 
                 };
 
@@ -57,7 +61,8 @@ namespace Thesis.data
                 {
                     Type = 1,
                     Level = 2,
-                    Name = "Doświadczony Hobbit"
+                    Name = "Doświadczony Hobbit",
+                    Subject = polish
 
                 };
 
@@ -65,7 +70,8 @@ namespace Thesis.data
                 {
                     Type = 1,
                     Level = 3,
-                    Name = "Prastary Olbrzym"
+                    Name = "Prastary Olbrzym",
+                    Subject = maths
 
                 };
 
