@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Thesis.data.Data;
 
 namespace Thesis.data
@@ -17,6 +18,28 @@ namespace Thesis.data
                 dbContext.Subjects.AddRange(math, logic, polish, english, naturalHistory);
                 await dbContext.SaveChangesAsync();
 
+            }
+
+            if (!dbContext.Users.OfType<Admin>().Any())
+            {
+                var passwordHasher = new PasswordHasher<Admin>();
+
+                var adminAccount = new Admin()
+                {
+                    CreatedBy = 0,
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now,
+                    Login = "admin.admin",
+                    FirstName = "System",
+                    LastName = "Admin",
+                    Email = "admin@systemAdmin"
+                };
+
+                var passwordHash = passwordHasher.HashPassword(adminAccount, "admin");
+                adminAccount.PasswordHash = passwordHash;
+
+                dbContext.Users.Add(adminAccount);
+                await dbContext.SaveChangesAsync();
             }
 
             if (!dbContext.NotificationMessages.Any())
