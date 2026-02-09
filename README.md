@@ -85,11 +85,11 @@ The system combines core education in mathematics, spelling, and logical thinkin
 The application follows **Clean Code** principles, ensuring modularity and scalability.
 
 ```text
-[cite_start]├── EngineeringThesis.API      # Endpoints, Controllers, and AutoMapper profiles
-[cite_start]├── EngineeringThesis.Logic    # Business logic, Adaptive System, and Event Handlers
-[cite_start]├── EngineeringThesis.Data     # Entity models and DB Context (EF Core)
-[cite_start]├── EngineeringThesis.Web      # React Frontend components
-[cite_start]└── EngineeringThesis.Tests    # xUnit test cases
+├── EngineeringThesis.API      # Punkty końcowe (Endpoints) i konfiguracja AutoMapper [cite: 337, 338]
+├── EngineeringThesis.Logic    # Logika biznesowa, system adaptacyjny i zdarzenia (Events) [cite: 340, 341]
+├── EngineeringThesis.Data     # Modele encji i kontekst bazy danych (EF Core) [cite: 343, 346]
+├── EngineeringThesis.Web      # Frontend w React [cite: 40, 206]
+└── EngineeringThesis.Tests    # Scenariusze testowe xUnit [cite: 347]
 
 ```
 
